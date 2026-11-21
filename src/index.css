@@ -1,1 +1,9 @@
 @import "tailwindcss";
+
+@import "tailwindcss";
+
+@theme {
+  --color-brand-yellow: #fff804;
+  --color-brand-olive: #81836c;
+  --color-brand-pink: #e280ff;
+}
