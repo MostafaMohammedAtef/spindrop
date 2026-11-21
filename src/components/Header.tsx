@@ -23,8 +23,27 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-10 bg-white text-sm font-medium tracking-wide text-black">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-6">
-        <Link to="/" onClick={closeMenu}>
-          <img className="h-15 w-auto" src="/header-logo.png" alt="Spindrop" />
+        <Link
+          to="/"
+          onClick={closeMenu}
+          className="group"
+          aria-label="Spindrop home"
+        >
+          <img
+            className="h-15 w-auto group-hover:hidden group-focus-visible:hidden group-active:hidden"
+            src="/spindrop-icon-default.png"
+            alt=""
+          />
+          <img
+            className="hidden h-15 w-auto group-hover:block group-focus-visible:hidden group-active:hidden"
+            src="/spindrop-icon-yellow.png"
+            alt=""
+          />
+          <img
+            className="hidden h-15 w-auto group-focus-visible:block group-active:block"
+            src="/spindrop-icon-pink.png"
+            alt=""
+          />
         </Link>
 
         <nav className="hidden lg:block">
