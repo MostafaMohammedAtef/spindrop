@@ -1,9 +1,12 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --color-brand-yellow: #fff804;
   --color-brand-olive: #81836c;
   --color-brand-pink: #e280ff;
+
+  --font-sans: 'DM Sans', sans-serif;
+  --font-display: 'Space Grotesk', sans-serif;
 }
