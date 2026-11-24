@@ -1,4 +1,3 @@
-import SectionTag from './SectionTag';
 import PillButton from './PillButton';
 import crowdfunding from '../assets/crowdfunding.png';
 import pressAndSell from '../assets/press-and-sell.png';

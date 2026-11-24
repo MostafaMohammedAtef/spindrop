@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import SectionTag from './SectionTag';
 import vinylOne from '../assets/vinyl-one.png';
 import vinylTwo from '../assets/vinyl-two.png';
 import vinylThree from '../assets/vinyl-three.png';

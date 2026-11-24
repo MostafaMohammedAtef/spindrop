@@ -26,7 +26,7 @@ export default function ArtistTestimonials() {
   const slide = slides[index];
 
   return (
-    <section className="grid min-h-[calc(100svh-4rem)] grid-cols-2 border-b border-black lg:min-h-[calc(100svh-5rem)]">
+    <section className="grid min-h-[calc(100svh-4rem)] grid-cols-1 border-b border-black lg:min-h-[calc(100svh-5rem)] lg:grid-cols-2">
       <div className="flex flex-col bg-brand-yellow px-6 py-8 lg:px-10 lg:py-10 2xl:px-16">
         <div>
           <SectionTag>Artists on Spindrop</SectionTag>
@@ -73,7 +73,7 @@ export default function ArtistTestimonials() {
         </div>
       </div>
 
-      <div className="relative aspect-[4/5] max-h-[36rem] border-t border-black lg:aspect-auto lg:max-h-none lg:border-l lg:border-t-0">
+      <div className="relative aspect-[4/5] w-full border-t border-black lg:aspect-auto lg:max-h-none lg:border-l lg:border-t-0">
         <img
           key={slide.artist.name}
           src={slide.photo}
