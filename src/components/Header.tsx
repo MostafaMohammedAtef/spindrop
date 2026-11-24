@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import logo from '../../public/spindrop-icon-default.png';
 
 const links = ['Discover', 'Search', 'Why Spindrop', 'Cart'];
@@ -36,15 +37,15 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-6 justify-self-end lg:flex">
-          <a href="#" className="text-sm font-medium uppercase hover:underline">
+          <Link to="/login" className="text-sm font-medium uppercase hover:underline">
             Log in
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/login"
             className="rounded-full bg-black px-6 py-3 text-xs font-bold uppercase tracking-wide text-white hover:bg-stone-800"
           >
             Make a record
-          </a>
+          </Link>
         </div>
 
         <button
@@ -67,12 +68,12 @@ export default function Header() {
               {link}
             </a>
           ))}
-          <a
-            href="#"
+          <Link
+            to="/login"
             className="mt-2 rounded-full bg-black px-6 py-3 text-center text-xs font-bold uppercase tracking-wide text-white"
           >
             Make a record
-          </a>
+          </Link>
           <a
             href="#"
             className="mt-3 py-3 text-center text-sm font-medium uppercase"
