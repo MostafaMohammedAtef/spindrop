@@ -4,6 +4,7 @@ import { useCart } from '../lib/CartContext';
 import { records } from '../data/records';
 import { usePricing } from '../lib/PricingContext';
 import CurrencyCountrySelector from './CurrencyCountrySelector';
+import ArtistLinks from './ArtistLinks';
 
 const recordsPerPage = 18;
 
@@ -26,7 +27,8 @@ export default function DiscoverPage() {
 
   return (
     <main className="bg-white text-black">
-      <section className="relative border-b border-black bg-palette-11 px-6 py-12 lg:px-12 lg:py-20">
+      <section className="relative isolate z-30 border-b border-black bg-palette-11 px-6 py-12 lg:px-12 lg:py-20">
+        <div className="relative z-10">
         <p className="inline-block border border-black bg-white px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-wide">The Spindrop shop</p>
         <div className="mt-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div>
@@ -38,6 +40,7 @@ export default function DiscoverPage() {
             <CurrencyCountrySelector />
             <p className="text-[0.65rem] leading-relaxed">Demo prices · {country.currency === 'USD' ? 'Shown in USD' : rateStatus === 'loading' ? 'Loading currency conversion…' : rateStatus === 'fallback' || !isCurrencyAvailable ? 'Showing USD; conversion rates unavailable' : `Estimated in ${country.currency} using reference rates`}</p>
           </div>
+        </div>
         </div>
         <div className="absolute -bottom-6 right-8 z-20 lg:right-[12%]">
           <button
@@ -86,7 +89,7 @@ export default function DiscoverPage() {
                 <span className="absolute bottom-4 right-4 rounded-full bg-black px-3 py-1 text-[0.6rem] font-bold uppercase tracking-wide text-white">Side A</span>
               </div>
               <div className="flex flex-1 flex-col pt-5">
-                <p className="text-[0.65rem] font-bold uppercase tracking-wide text-stone-600">{record.artist}</p>
+                <p className="text-[0.65rem] font-bold uppercase tracking-wide text-stone-600"><ArtistLinks artists={record.artists} /></p>
                 <h2 className="mt-1 text-xl font-bold">{record.title}</h2>
                 <p className="mt-3 text-lg font-semibold">{formatPrice(record.priceUsd)}</p>
                 <button type="button" onClick={() => addToCart(record.id)} className="mt-5 w-full rounded-full bg-black px-5 py-3 text-xs font-bold uppercase tracking-wide text-white hover:bg-palette-31">

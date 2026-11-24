@@ -7,6 +7,7 @@ import { records } from '../data/records';
 import { useCart } from '../lib/CartContext';
 import { usePricing } from '../lib/PricingContext';
 import CurrencyCountrySelector from './CurrencyCountrySelector';
+import ArtistLinks from './ArtistLinks';
 
 const cartIcons = [musicNotes, recordNeedle, headphones];
 
@@ -54,7 +55,7 @@ export default function CartPage() {
                     </div>
                     <div className="flex min-w-0 flex-1 flex-col justify-between">
                       <div>
-                        <p className="text-[0.65rem] font-bold uppercase tracking-wide text-stone-600">{record.artist}</p>
+                        <p className="text-[0.65rem] font-bold uppercase tracking-wide text-stone-600"><ArtistLinks artists={record.artists} /></p>
                         <h2 className="mt-1 text-lg font-bold lg:text-xl">{record.title}</h2>
                         <p className="mt-2 text-sm font-semibold">{formatPrice(record.priceUsd)} each · {formatPrice(record.priceUsd * item.quantity)} total</p>
                         <p className="mt-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wide"><img src={cartIcon} alt="" className="h-5 w-5 object-contain" /> Quantity: {item.quantity}</p>

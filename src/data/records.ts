@@ -18,27 +18,36 @@ import houdaBondokOne from '../../backend/vinyl-images/houda-bondok-one.png';
 export type RecordProduct = {
   id: string;
   title: string;
-  artist: string;
+  artists: string[];
   image: string;
   background: string;
   priceUsd: number;
 };
 
 export const records: RecordProduct[] = [
-  { id: 'vinyl-one', title: 'Shravanam', artist: 'Bombay S. Jayashri', image: vinylOne, background: 'bg-palette-02', priceUsd: 24.99 },
-  { id: 'vinyl-two', title: 'Black Country Disco', artist: 'Tom Aspaul', image: vinylTwo, background: 'bg-palette-21', priceUsd: 27.99 },
-  { id: 'vinyl-three', title: 'CANVAS2033', artist: 'Barny Fletcher', image: vinylThree, background: 'bg-palette-14', priceUsd: 22.99 },
-  { id: 'vinyl-four', title: 'HARSH 《殘》', artist: 'Sophy Wong (王嘉儀)', image: vinylFour, background: 'bg-palette-35', priceUsd: 25.99 },
-  { id: 'vinyl-five', title: 'Eternal', artist: 'Alnda Radio', image: vinylFive, background: 'bg-palette-31', priceUsd: 29.99 },
-  { id: 'vinyl-six', title: 'Vol. 1–5', artist: '4 Dilla', image: vinylSix, background: 'bg-palette-24', priceUsd: 26.99 },
-  { id: 'afroto-kebda', title: 'Kebda', artist: 'Afroto', image: afrotoKebda, background: 'bg-palette-11', priceUsd: 21.99 },
-  { id: 'bts-swin', title: 'SWIM', artist: 'BTS', image: btsSwin, background: 'bg-palette-25', priceUsd: 28.99 },
-  { id: '5sos-youngblood', title: 'Youngblood', artist: '5 Seconds of Summer', image: fiveSOSYoungblood, background: 'bg-palette-13', priceUsd: 23.99 },
-  { id: 'drake-die-trying', title: 'Die Trying', artist: 'PARTYNEXTDOOR, Drake & Yebba', image: drakeDieTrying, background: 'bg-palette-33', priceUsd: 30.99 },
-  { id: 'essam-sasa-one', title: 'وسط دموع وجراح وخراب', artist: 'Essam Sasa', image: essamSasaOne, background: 'bg-palette-51', priceUsd: 19.99 },
-  { id: 'weeknd-starboy', title: 'Starboy', artist: 'The Weeknd', image: weekndStarboy, background: 'bg-palette-48', priceUsd: 31.99 },
-  { id: 'olivia-rodrigo-drop-head', title: 'drop dead', artist: 'Olivia Rodrigo', image: oliviaRodrigoDropHead, background: 'bg-palette-39', priceUsd: 27.49 },
-  { id: 'moscow-dawly', title: 'Dawly', artist: 'Moscow & EL Waili', image: moscowDawly, background: 'bg-palette-36', priceUsd: 20.99 },
-  { id: 'justin-bieber-swag', title: 'Daisies', artist: 'Justin Bieber', image: justinBieberSwag, background: 'bg-palette-30', priceUsd: 32.99 },
-  { id: 'houda-bondok-one', title: 'خيبت توقعاتك', artist: 'Houda Bondok', image: houdaBondokOne, background: 'bg-palette-05', priceUsd: 18.99 },
+  { id: 'vinyl-one', title: 'Shravanam', artists: ['Bombay S. Jayashri'], image: vinylOne, background: 'bg-palette-02', priceUsd: 24.99 },
+  { id: 'vinyl-two', title: 'Black Country Disco', artists: ['Tom Aspaul'], image: vinylTwo, background: 'bg-palette-21', priceUsd: 27.99 },
+  { id: 'vinyl-three', title: 'CANVAS2033', artists: ['Barny Fletcher'], image: vinylThree, background: 'bg-palette-14', priceUsd: 22.99 },
+  { id: 'vinyl-four', title: 'HARSH 《殘》', artists: ['Sophy Wong (王嘉儀)'], image: vinylFour, background: 'bg-palette-35', priceUsd: 25.99 },
+  { id: 'vinyl-five', title: 'Eternal', artists: ['Alnda Radio'], image: vinylFive, background: 'bg-palette-31', priceUsd: 29.99 },
+  { id: 'vinyl-six', title: 'Vol. 1–5', artists: ['4 Dilla'], image: vinylSix, background: 'bg-palette-24', priceUsd: 26.99 },
+  { id: 'afroto-kebda', title: 'Kebda', artists: ['Afroto'], image: afrotoKebda, background: 'bg-palette-11', priceUsd: 21.99 },
+  { id: 'bts-swin', title: 'SWIM', artists: ['BTS'], image: btsSwin, background: 'bg-palette-25', priceUsd: 28.99 },
+  { id: '5sos-youngblood', title: 'Youngblood', artists: ['5 Seconds of Summer'], image: fiveSOSYoungblood, background: 'bg-palette-13', priceUsd: 23.99 },
+  { id: 'drake-die-trying', title: 'Die Trying', artists: ['PARTYNEXTDOOR', 'Drake', 'Yebba'], image: drakeDieTrying, background: 'bg-palette-33', priceUsd: 30.99 },
+  { id: 'essam-sasa-one', title: 'وسط دموع وجراح وخراب', artists: ['Essam Sasa'], image: essamSasaOne, background: 'bg-palette-51', priceUsd: 19.99 },
+  { id: 'weeknd-starboy', title: 'Starboy', artists: ['The Weeknd'], image: weekndStarboy, background: 'bg-palette-48', priceUsd: 31.99 },
+  { id: 'olivia-rodrigo-drop-head', title: 'drop dead', artists: ['Olivia Rodrigo'], image: oliviaRodrigoDropHead, background: 'bg-palette-39', priceUsd: 27.49 },
+  { id: 'moscow-dawly', title: 'Dawly', artists: ['Moscow', 'EL Waili'], image: moscowDawly, background: 'bg-palette-36', priceUsd: 20.99 },
+  { id: 'justin-bieber-swag', title: 'Daisies', artists: ['Justin Bieber'], image: justinBieberSwag, background: 'bg-palette-30', priceUsd: 32.99 },
+  { id: 'houda-bondok-one', title: 'خيبت توقعاتك', artists: ['Houda Bondok'], image: houdaBondokOne, background: 'bg-palette-05', priceUsd: 18.99 },
 ];
+
+export function artistSlug(name: string) {
+  return name
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}

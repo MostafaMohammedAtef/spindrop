@@ -15,6 +15,7 @@ import LoginPage from './components/LoginPage'
 import CreateAccountPage from './components/CreateAccountPage'
 import DiscoverPage from './components/DiscoverPage'
 import CartPage from './components/CartPage'
+import ArtistPage from './components/ArtistPage'
 import { CartProvider } from './lib/CartContext'
 import { PricingProvider } from './lib/PricingContext'
 function App() {
@@ -59,6 +60,7 @@ function App() {
           <Route path="/create-account" element={<CreateAccountPage />} />
           <Route path="/discover" element={<DiscoverPage />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route path="/artists/:artistSlug" element={<ArtistPage />} />
           <Route path="*" element={
             <>
               <WhyHero />
