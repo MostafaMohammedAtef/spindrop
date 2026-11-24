@@ -47,7 +47,7 @@ const photos = [
 
 export default function Community() {
   return (
-    <section className="border-b border-black">
+    <section className="min-h-[calc(100svh-4rem)] border-b border-black lg:min-h-[calc(100svh-5rem)]">
       <div className="mx-auto flex max-w-md flex-col items-center px-6 pb-16 pt-14 text-center lg:max-w-2xl lg:pb-24 lg:pt-20">
         <SectionTag>Community</SectionTag>
         <h2 className="mt-5 text-3xl font-bold leading-tight lg:text-4xl">
@@ -62,13 +62,13 @@ export default function Community() {
         </PillButton>
       </div>
 
-      <div className="relative mx-auto max-w-[88rem]">
+      <div className="relative w-full">
         <img
           src={peekIcon}
           alt=""
-          className="pointer-events-none absolute bottom-full right-[6%] w-16 lg:right-[10%] lg:w-24"
+          className="pointer-events-none absolute bottom-[calc(100%-1.5rem)] right-[6%] z-20 w-16 lg:right-[10%] lg:w-24"
         />
-        <div className="grid grid-cols-2 gap-px border border-black bg-black lg:grid-cols-4">
+        <div className="relative z-10 grid grid-cols-2 gap-px border border-black bg-black lg:grid-cols-4">
           {photos.map((photo) => (
             <a
               key={photo.href}

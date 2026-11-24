@@ -64,7 +64,7 @@ const groups: AccordionGroup[] = [
 
 export default function Services() {
   return (
-    <section className="border-b border-black">
+    <section className="min-h-[calc(100svh-4rem)] border-b border-black lg:min-h-[calc(100svh-5rem)]">
       <div className="mx-auto grid max-w-md grid-cols-1 gap-12 px-4 py-14 lg:max-w-6xl lg:grid-cols-2 lg:items-start lg:gap-16 lg:px-8 lg:py-24 2xl:max-w-[88rem] 2xl:gap-24">
         <div className="flex flex-col items-center text-center lg:pt-6">
           <SectionTag>Our services</SectionTag>

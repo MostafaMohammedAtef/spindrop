@@ -5,7 +5,7 @@ import vinylSleeve from '../assets/vinyl-sleeve.jpg'
 
 export default function WhyHero() {
   return (
-    <div className="overflow-x-clip">
+    <div className="min-h-[calc(100svh-4rem)] overflow-x-clip lg:min-h-[calc(100svh-5rem)]">
       <section className="border-b border-black">
         <div className="mx-auto grid max-w-md grid-cols-1 px-4 lg:max-w-6xl lg:grid-cols-[24rem_minmax(0,1fr)] lg:items-start lg:gap-12 lg:px-8 2xl:max-w-[88rem] 2xl:grid-cols-[30rem_minmax(0,1fr)] 2xl:gap-20">
           <div className="relative z-30 col-start-1 row-start-1 w-[40%] self-start pt-10 lg:w-auto lg:pt-24 2xl:pt-32">

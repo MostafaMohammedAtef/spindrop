@@ -25,7 +25,7 @@ const panels = [
 
 export default function RetailSupport() {
   return (
-    <section className="border-b border-black">
+    <section className="min-h-[calc(100svh-4rem)] border-b border-black lg:min-h-[calc(100svh-5rem)]">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {panels.map((panel) => (
           <article

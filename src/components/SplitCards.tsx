@@ -24,7 +24,7 @@ const cards = [
 
 export default function SplitCards() {
   return (
-    <section className="border-y border-black">
+    <section className="min-h-[calc(100svh-4rem)] border-y border-black lg:min-h-[calc(100svh-5rem)]">
       <div className="grid grid-cols-1 lg:grid-cols-2">
         {cards.map((card) => (
           <article
