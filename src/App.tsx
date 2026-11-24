@@ -16,6 +16,7 @@ import CreateAccountPage from './components/CreateAccountPage'
 import DiscoverPage from './components/DiscoverPage'
 import CartPage from './components/CartPage'
 import { CartProvider } from './lib/CartContext'
+import { PricingProvider } from './lib/PricingContext'
 function App() {
   const [showLoader, setShowLoader] = useState(false)
   const [pageLoaded, setPageLoaded] = useState(document.readyState === 'complete')
@@ -50,8 +51,9 @@ function App() {
     <>
       {showLoader && !pageLoaded && <VinylLoadingScreen />}
       <CartProvider>
-        <Header />
-        <Routes>
+        <PricingProvider>
+          <Header />
+          <Routes>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/sign-in" element={<LoginPage />} />
           <Route path="/create-account" element={<CreateAccountPage />} />
@@ -70,7 +72,8 @@ function App() {
               <Footer />
             </>
           } />
-        </Routes>
+          </Routes>
+        </PricingProvider>
       </CartProvider>
     </>
   )
