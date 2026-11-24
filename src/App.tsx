@@ -13,6 +13,9 @@ import Footer from './components/Footer'
 import VinylLoadingScreen from './components/VinylLoadingScreen'
 import LoginPage from './components/LoginPage'
 import CreateAccountPage from './components/CreateAccountPage'
+import DiscoverPage from './components/DiscoverPage'
+import CartPage from './components/CartPage'
+import { CartProvider } from './lib/CartContext'
 function App() {
   const [showLoader, setShowLoader] = useState(false)
   const [pageLoaded, setPageLoaded] = useState(document.readyState === 'complete')
@@ -46,25 +49,29 @@ function App() {
   return (
     <>
       {showLoader && !pageLoaded && <VinylLoadingScreen />}
-      <Header />
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/sign-in" element={<LoginPage />} />
-        <Route path="/create-account" element={<CreateAccountPage />} />
-        <Route path="*" element={
-          <>
-            <WhyHero />
-            <SplitCards />
-            <Services />
-            <RetailSupport />
-            <Community />
-            <ArtistMarquee />
-            <ArtistTestimonials />
-            <VinylStudio />
-            <Footer />
-          </>
-        } />
-      </Routes>
+      <CartProvider>
+        <Header />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/sign-in" element={<LoginPage />} />
+          <Route path="/create-account" element={<CreateAccountPage />} />
+          <Route path="/discover" element={<DiscoverPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="*" element={
+            <>
+              <WhyHero />
+              <SplitCards />
+              <Services />
+              <RetailSupport />
+              <Community />
+              <ArtistMarquee />
+              <ArtistTestimonials />
+              <VinylStudio />
+              <Footer />
+            </>
+          } />
+        </Routes>
+      </CartProvider>
     </>
   )
 }

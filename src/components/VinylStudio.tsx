@@ -40,7 +40,7 @@ export default function VinylStudio() {
   }, []);
 
   return (
-    <section className="relative flex h-[calc(100svh-4rem)] flex-col items-center overflow-hidden bg-black px-6 py-8 text-center text-white lg:h-[calc(100svh-5rem)] lg:py-10">
+    <section id="vinyl-studio" className="relative flex h-[calc(100svh-4rem)] flex-col items-center overflow-hidden bg-black px-6 py-8 text-center text-white lg:h-[calc(100svh-5rem)] lg:py-10">
       <span className="inline-block border border-white px-2 py-0.5 text-[0.6rem] font-semibold uppercase tracking-wide text-white">
         Vinyl Studio
       </span>
