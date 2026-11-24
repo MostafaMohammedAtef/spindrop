@@ -73,12 +73,12 @@ export default function ArtistTestimonials() {
         </div>
       </div>
 
-      <div className="relative aspect-[4/5] w-full border-t border-black lg:aspect-auto lg:max-h-none lg:border-l lg:border-t-0">
+      <div className="relative w-full border-t border-black lg:min-h-full lg:border-l lg:border-t-0">
         <img
           key={slide.artist.name}
           src={slide.photo}
           alt={slide.alt}
-          className="absolute inset-0 h-full w-full animate-fade-in object-cover object-[50%_60%] motion-reduce:animate-none"
+          className="block h-auto w-full lg:absolute lg:inset-0 lg:h-full lg:object-cover lg:object-[50%_60%]"
         />
       </div>
     </section>
