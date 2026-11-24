@@ -24,7 +24,7 @@ export default function LoginPage() {
       <section className="flex items-center justify-center bg-white px-6 py-14 lg:px-12">
         <div className="w-full max-w-md">
           <Link to="/" className="text-xs font-bold uppercase tracking-wide underline underline-offset-4">← Back to Spindrop</Link>
-          <h2 className="mt-10 text-3xl font-bold lg:text-4xl">Log in</h2>
+          <h2 className="mt-10 text-3xl font-bold lg:text-4xl">Sign in</h2>
           <p className="mt-2 text-sm text-stone-600">Welcome back. Enter your details below.</p>
           <form className="mt-8 space-y-5" onSubmit={(event) => event.preventDefault()}>
             <label className="block text-xs font-bold uppercase tracking-wide" htmlFor="email">
@@ -39,9 +39,9 @@ export default function LoginPage() {
               <label className="flex items-center gap-2"><input type="checkbox" name="remember" className="h-4 w-4 accent-palette-21" /> Remember me</label>
               <a href="#" className="font-semibold underline underline-offset-4">Forgot password?</a>
             </div>
-            <button type="submit" className="w-full rounded-full bg-brand-yellow px-6 py-4 text-xs font-bold uppercase tracking-wide text-black hover:bg-palette-12">Log in</button>
+            <button type="submit" className="w-full rounded-full bg-brand-yellow px-6 py-4 text-xs font-bold uppercase tracking-wide text-black hover:bg-palette-12">Sign in</button>
           </form>
-          <p className="mt-7 text-center text-sm text-stone-600">New to Spindrop? <a href="#" className="font-bold text-black underline underline-offset-4">Create an account</a></p>
+          <p className="mt-7 text-center text-sm text-stone-600">New to Spindrop? <Link to="/create-account" className="font-bold text-black underline underline-offset-4">Create an account</Link></p>
         </div>
       </section>
     </main>

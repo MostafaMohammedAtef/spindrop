@@ -37,8 +37,8 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-6 justify-self-end lg:flex">
-          <Link to="/login" className="text-sm font-medium uppercase hover:underline">
-            Log in
+          <Link to="/sign-in" className="text-sm font-medium uppercase hover:underline">
+            Sign in
           </Link>
           <Link
             to="/login"
@@ -74,12 +74,12 @@ export default function Header() {
           >
             Make a record
           </Link>
-          <a
-            href="#"
+          <Link
+            to="/sign-in"
             className="mt-3 py-3 text-center text-sm font-medium uppercase"
           >
-            Log in
-          </a>
+            Sign in
+          </Link>
         </nav>
       )}
     </header>

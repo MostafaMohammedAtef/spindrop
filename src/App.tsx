@@ -12,6 +12,7 @@ import VinylStudio from './components/VinylStudio'
 import Footer from './components/Footer'
 import VinylLoadingScreen from './components/VinylLoadingScreen'
 import LoginPage from './components/LoginPage'
+import CreateAccountPage from './components/CreateAccountPage'
 function App() {
   const [showLoader, setShowLoader] = useState(false)
   const [pageLoaded, setPageLoaded] = useState(document.readyState === 'complete')
@@ -48,6 +49,8 @@ function App() {
       <Header />
       <Routes>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/sign-in" element={<LoginPage />} />
+        <Route path="/create-account" element={<CreateAccountPage />} />
         <Route path="*" element={
           <>
             <WhyHero />
