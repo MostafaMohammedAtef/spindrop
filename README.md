@@ -47,6 +47,8 @@ npm run build
 vercel --prod
 ```
 
+Live site: [https://spindrop-lemon.vercel.app](https://spindrop-lemon.vercel.app)
+
 ## Project structure
 
 ```text
