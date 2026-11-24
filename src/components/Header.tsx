@@ -1,11 +1,17 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../public/spindrop-icon-default.png';
+import { getDemoSession, signOutDemoAccount, subscribeToDemoAuth } from '../lib/demoAuth';
 
 const links = ['Discover', 'Search', 'Why Spindrop', 'Cart'];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [firstName, setFirstName] = useState(() => getDemoSession()?.name.trim().split(/\s+/)[0] ?? '');
+
+  useEffect(() => subscribeToDemoAuth(() => {
+    setFirstName(getDemoSession()?.name.trim().split(/\s+/)[0] ?? '');
+  }), []);
 
   return (
     <header className="sticky top-0 z-40 bg-white">
@@ -37,9 +43,14 @@ export default function Header() {
         </nav>
 
         <div className="hidden items-center gap-6 justify-self-end lg:flex">
-          <Link to="/sign-in" className="text-sm font-medium uppercase hover:underline">
-            Sign in
-          </Link>
+          {firstName ? (
+            <>
+              <span className="text-sm font-medium">Hi, {firstName}</span>
+              <button type="button" onClick={signOutDemoAccount} className="text-sm font-medium uppercase hover:underline">Sign out</button>
+            </>
+          ) : (
+            <Link to="/sign-in" className="text-sm font-medium uppercase hover:underline">Sign in</Link>
+          )}
           <Link
             to="/login"
             className="rounded-full bg-black px-6 py-3 text-xs font-bold uppercase tracking-wide text-white hover:bg-stone-800"
@@ -74,12 +85,14 @@ export default function Header() {
           >
             Make a record
           </Link>
-          <Link
-            to="/sign-in"
-            className="mt-3 py-3 text-center text-sm font-medium uppercase"
-          >
-            Sign in
-          </Link>
+          {firstName ? (
+            <>
+              <span className="mt-3 py-3 text-center text-sm font-medium">Hi, {firstName}</span>
+              <button type="button" onClick={() => { signOutDemoAccount(); setOpen(false); }} className="py-3 text-center text-sm font-medium uppercase">Sign out</button>
+            </>
+          ) : (
+            <Link to="/sign-in" onClick={() => setOpen(false)} className="mt-3 py-3 text-center text-sm font-medium uppercase">Sign in</Link>
+          )}
         </nav>
       )}
     </header>

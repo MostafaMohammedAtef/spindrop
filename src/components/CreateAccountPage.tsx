@@ -1,6 +1,27 @@
-import { Link } from 'react-router-dom';
+import { useState, type FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { createDemoAccount } from '../lib/demoAuth';
 
 export default function CreateAccountPage() {
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    try {
+      createDemoAccount(
+        String(formData.get('name') ?? ''),
+        String(formData.get('email') ?? ''),
+        String(formData.get('password') ?? ''),
+      );
+      navigate('/');
+    } catch (submitError) {
+      setError(submitError instanceof Error ? submitError.message : 'Could not create your account.');
+    }
+  }
+
   return (
     <main className="grid min-h-[calc(100svh-5rem)] grid-cols-1 border-b border-black lg:grid-cols-2">
       <section className="relative flex min-h-80 flex-col justify-between overflow-hidden bg-palette-21 p-8 text-black lg:order-2 lg:min-h-full lg:p-12 2xl:p-16">
@@ -22,7 +43,7 @@ export default function CreateAccountPage() {
           <Link to="/" className="text-xs font-bold uppercase tracking-wide underline underline-offset-4">← Back to Spindrop</Link>
           <h2 className="mt-10 text-3xl font-bold lg:text-4xl">Create your account</h2>
           <p className="mt-2 text-sm text-stone-600">A home for the records and artists you love.</p>
-          <form className="mt-8 space-y-5" onSubmit={(event) => event.preventDefault()}>
+          <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             <label className="block text-xs font-bold uppercase tracking-wide" htmlFor="name">Name
               <input id="name" name="name" type="text" autoComplete="name" required placeholder="Your name" className="mt-2 block w-full rounded-none border border-black bg-white px-4 py-3 text-sm font-normal normal-case tracking-normal outline-none placeholder:text-stone-400 focus:ring-2 focus:ring-palette-21" />
             </label>
@@ -32,6 +53,7 @@ export default function CreateAccountPage() {
             <label className="block text-xs font-bold uppercase tracking-wide" htmlFor="password">Create password
               <input id="password" name="password" type="password" autoComplete="new-password" minLength={8} required placeholder="At least 8 characters" className="mt-2 block w-full rounded-none border border-black bg-white px-4 py-3 text-sm font-normal normal-case tracking-normal outline-none placeholder:text-stone-400 focus:ring-2 focus:ring-palette-21" />
             </label>
+            {error && <p role="alert" className="text-sm font-medium text-red-700">{error}</p>}
             <button type="submit" className="w-full rounded-full bg-brand-yellow px-6 py-4 text-xs font-bold uppercase tracking-wide text-black hover:bg-palette-12">Create account</button>
           </form>
           <p className="mt-7 text-center text-sm text-stone-600">Already have an account? <Link to="/sign-in" className="font-bold text-black underline underline-offset-4">Sign in</Link></p>
