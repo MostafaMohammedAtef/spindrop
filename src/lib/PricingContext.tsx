@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { readJson, readString, writeJson, writeString } from './storage';
 
 export const marketCountries = [
   { code: 'US', name: 'United States', currency: 'USD', locale: 'en-US' },
@@ -40,17 +41,14 @@ type PricingContextValue = {
 };
 
 const countryStorageKey = 'spindrop.market-country';
+const ratesStorageKey = 'spindrop.market-rates';
 const PricingContext = createContext<PricingContextValue | null>(null);
 const quoteCurrencies = [...new Set(marketCountries.map((country) => country.currency))]
   .filter((currency) => currency !== 'USD');
 
 function getInitialCountryCode() {
-  try {
-    const savedCountry = localStorage.getItem(countryStorageKey);
-    if (marketCountries.some((country) => country.code === savedCountry)) return savedCountry;
-  } catch {
-    return 'US';
-  }
+  const savedCountry = readString(countryStorageKey);
+  if (marketCountries.some((country) => country.code === savedCountry)) return savedCountry;
 
   if (typeof navigator !== 'undefined') {
     for (const locale of navigator.languages) {
@@ -62,18 +60,27 @@ function getInitialCountryCode() {
   return 'US';
 }
 
+function readFreshRates() {
+  const cached = readJson(ratesStorageKey, (value): value is { rates: Record<string, number>; timestamp: number } => typeof value === 'object' && value !== null && 'rates' in value && 'timestamp' in value && typeof value.timestamp === 'number' && typeof value.rates === 'object' && value.rates !== null, { rates: { USD: 1 }, timestamp: 0 });
+  return Date.now() - cached.timestamp < 12 * 60 * 60 * 1000 ? cached.rates : null;
+}
+
 export function PricingProvider({ children }: { children: ReactNode }) {
   const [countryCode, setCountryCode] = useState(getInitialCountryCode);
-  const [rates, setRates] = useState<Record<string, number>>({ USD: 1 });
-  const [rateStatus, setRateStatus] = useState<PricingContextValue['rateStatus']>('loading');
+  const [cachedRates] = useState(readFreshRates);
+  const [rates, setRates] = useState<Record<string, number>>(cachedRates ?? { USD: 1 });
+  const [rateStatus, setRateStatus] = useState<PricingContextValue['rateStatus']>(cachedRates ? 'ready' : 'loading');
   const country = marketCountries.find((entry) => entry.code === countryCode) ?? marketCountries[0];
   const isCurrencyAvailable = country.currency === 'USD' || typeof rates[country.currency] === 'number';
 
   useEffect(() => {
+    if (cachedRates) return;
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), 5000);
     let cancelled = false;
     const quotes = quoteCurrencies.join(',');
 
-    fetch(`https://api.frankfurter.dev/v2/rates?base=USD&quotes=${quotes}`)
+    fetch(`https://api.frankfurter.dev/v2/rates?base=USD&quotes=${quotes}`, { signal: controller.signal })
       .then((response) => {
         if (!response.ok) throw new Error('Exchange rates are unavailable.');
         return response.json() as Promise<unknown>;
@@ -96,26 +103,28 @@ export function PricingProvider({ children }: { children: ReactNode }) {
         if (!cancelled) {
           setRates(nextRates);
           setRateStatus('ready');
+          writeJson(ratesStorageKey, { rates: nextRates, timestamp: Date.now() });
         }
       })
       .catch(() => {
-        if (!cancelled) setRateStatus('fallback');
+        if (!cancelled) {
+          setRates({ USD: 1 });
+          setRateStatus('fallback');
+        }
       });
 
     return () => {
       cancelled = true;
+      window.clearTimeout(timeout);
+      controller.abort();
     };
-  }, []);
+  }, [cachedRates]);
 
   function updateCountry(countryCodeToSet: string) {
     const nextCountry = marketCountries.find((entry) => entry.code === countryCodeToSet);
     if (!nextCountry) return;
     setCountryCode(nextCountry.code);
-    try {
-      localStorage.setItem(countryStorageKey, nextCountry.code);
-    } catch {
-      return;
-    }
+    writeString(countryStorageKey, nextCountry.code);
   }
 
   const value = useMemo<PricingContextValue>(() => ({
@@ -127,10 +136,11 @@ export function PricingProvider({ children }: { children: ReactNode }) {
       const rate = rates[country.currency];
       const currency = rate ? country.currency : 'USD';
       const amount = rate ? amountInUsd * rate : amountInUsd;
-      return new Intl.NumberFormat(country.locale, {
+      const formatted = new Intl.NumberFormat(country.locale, {
         style: 'currency',
         currency,
       }).format(amount);
+      return rate ? `approx. ${formatted}` : formatted;
     },
   }), [country, isCurrencyAvailable, rates, rateStatus]);
 

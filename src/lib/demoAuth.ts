@@ -1,84 +1,83 @@
+import { readJson, writeJson } from './storage';
+
 type DemoAccount = {
   name: string;
   email: string;
-  password: string;
+  salt?: string;
+  hash?: string;
+  password?: string;
 };
 
-type DemoSession = {
-  name: string;
-  email: string;
-};
+type DemoSession = { name: string; email: string };
 
 const accountsKey = 'spindrop.demo.accounts';
 const sessionKey = 'spindrop.demo.session';
 const authChangeEvent = 'spindrop-auth-change';
 
-function readAccounts(): DemoAccount[] {
-  try {
-    const value = localStorage.getItem(accountsKey);
-    const accounts: unknown = value ? JSON.parse(value) : [];
-    return Array.isArray(accounts) ? accounts as DemoAccount[] : [];
-  } catch {
-    return [];
-  }
+function isAccounts(value: unknown): value is DemoAccount[] {
+  return Array.isArray(value) && value.every((account) => typeof account === 'object' && account !== null && 'name' in account && 'email' in account && typeof account.name === 'string' && typeof account.email === 'string');
+}
+
+function readAccounts() {
+  return readJson<DemoAccount[]>(accountsKey, isAccounts, []);
 }
 
 function announceAuthChange() {
   window.dispatchEvent(new Event(authChangeEvent));
 }
 
-export function getDemoSession(): DemoSession | null {
-  try {
-    const value = localStorage.getItem(sessionKey);
-    if (!value) return null;
-    const session: unknown = JSON.parse(value);
-    if (
-      typeof session === 'object' &&
-      session !== null &&
-      'name' in session &&
-      'email' in session &&
-      typeof session.name === 'string' &&
-      typeof session.email === 'string'
-    ) {
-      return { name: session.name, email: session.email };
-    }
-    return null;
-  } catch {
-    return null;
-  }
+function toBase64(bytes: Uint8Array) {
+  return btoa(String.fromCharCode(...bytes));
 }
 
-export function createDemoAccount(name: string, email: string, password: string) {
+function fromBase64(value: string) {
+  return Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
+}
+
+async function hashPassword(password: string, salt: Uint8Array) {
+  const key = await crypto.subtle.importKey('raw', new TextEncoder().encode(password), 'PBKDF2', false, ['deriveBits']);
+  const saltBuffer = new ArrayBuffer(salt.byteLength);
+  new Uint8Array(saltBuffer).set(salt);
+  const bits = await crypto.subtle.deriveBits({ name: 'PBKDF2', hash: 'SHA-256', salt: saltBuffer, iterations: 210000 }, key, 256);
+  return toBase64(new Uint8Array(bits));
+}
+
+export function getDemoSession(): DemoSession | null {
+  return readJson<DemoSession | null>(sessionKey, (value): value is DemoSession => typeof value === 'object' && value !== null && 'name' in value && 'email' in value && typeof value.name === 'string' && typeof value.email === 'string', null);
+}
+
+export async function createDemoAccount(name: string, email: string, password: string) {
   const accounts = readAccounts();
   const normalizedEmail = email.trim().toLowerCase();
-
-  if (accounts.some((account) => account.email === normalizedEmail)) {
-    throw new Error('An account with this email already exists.');
-  }
-
-  const account = { name: name.trim(), email: normalizedEmail, password };
-  accounts.push(account);
-  localStorage.setItem(accountsKey, JSON.stringify(accounts));
-  localStorage.setItem(sessionKey, JSON.stringify({ name: account.name, email: account.email }));
+  if (accounts.some((account) => account.email === normalizedEmail)) throw new Error('An account with this email already exists.');
+  const salt = crypto.getRandomValues(new Uint8Array(16));
+  const account = { name: name.trim().slice(0, 100), email: normalizedEmail.slice(0, 254), salt: toBase64(salt), hash: await hashPassword(password, salt) };
+  if (!writeJson(accountsKey, [...accounts, account])) throw new Error('Browser storage is unavailable.');
+  writeJson(sessionKey, { name: account.name, email: account.email });
   announceAuthChange();
 }
 
-export function signInDemoAccount(email: string, password: string) {
+export async function signInDemoAccount(email: string, password: string) {
   const normalizedEmail = email.trim().toLowerCase();
-  const account = readAccounts().find(
-    (savedAccount) => savedAccount.email === normalizedEmail && savedAccount.password === password,
-  );
-
-  if (!account) {
-    throw new Error('The email or password is incorrect.');
+  const accounts = readAccounts();
+  const account = accounts.find((entry) => entry.email === normalizedEmail);
+  if (!account) throw new Error('The email or password is incorrect.');
+  let valid = false;
+  if (account.salt && account.hash) {
+    valid = await hashPassword(password, fromBase64(account.salt)) === account.hash;
+  } else if (typeof account.password === 'string' && account.password === password) {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const migrated = { name: account.name, email: account.email, salt: toBase64(salt), hash: await hashPassword(password, salt) };
+    writeJson(accountsKey, accounts.map((entry) => entry.email === account.email ? migrated : entry));
+    valid = true;
   }
-
-  localStorage.setItem(sessionKey, JSON.stringify({ name: account.name, email: account.email }));
+  if (!valid) throw new Error('The email or password is incorrect.');
+  if (!writeJson(sessionKey, { name: account.name, email: account.email })) throw new Error('Browser storage is unavailable.');
   announceAuthChange();
 }
 
 export function signOutDemoAccount() {
-  localStorage.removeItem(sessionKey);
+  try { window.localStorage.removeItem(sessionKey); } catch { return; }
   announceAuthChange();
 }
 

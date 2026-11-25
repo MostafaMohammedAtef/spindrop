@@ -6,12 +6,12 @@ export default function CreateAccountPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
     try {
-      createDemoAccount(
+      await createDemoAccount(
         String(formData.get('name') ?? ''),
         String(formData.get('email') ?? ''),
         String(formData.get('password') ?? ''),
@@ -43,6 +43,7 @@ export default function CreateAccountPage() {
           <Link to="/" className="text-xs font-bold uppercase tracking-wide underline underline-offset-4">← Back to Spindrop</Link>
           <h2 className="mt-10 text-3xl font-bold lg:text-4xl">Create your account</h2>
           <p className="mt-2 text-sm text-stone-600">A home for the records and artists you love.</p>
+          <p className="mt-3 border border-black bg-brand-yellow px-3 py-2 text-xs">Demo account, stored only in this browser.</p>
           <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             <label className="block text-xs font-bold uppercase tracking-wide" htmlFor="name">Name
               <input id="name" name="name" type="text" autoComplete="name" required placeholder="Your name" className="mt-2 block w-full rounded-none border border-black bg-white px-4 py-3 text-sm font-normal normal-case tracking-normal outline-none placeholder:text-stone-400 focus:ring-2 focus:ring-palette-21" />

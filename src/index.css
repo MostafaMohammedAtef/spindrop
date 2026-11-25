@@ -198,6 +198,14 @@
   animation: vinyl-loader-enter 240ms ease-out both;
 }
 
+html {
+  scroll-padding-top: 5rem;
+}
+
+main [id] {
+  scroll-margin-top: 5rem;
+}
+
 .vinyl-loading-brand {
   position: absolute;
   top: clamp(1.25rem, 5vh, 3rem);

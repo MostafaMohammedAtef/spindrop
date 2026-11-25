@@ -6,12 +6,12 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
 
     try {
-      signInDemoAccount(
+      await signInDemoAccount(
         String(formData.get('email') ?? ''),
         String(formData.get('password') ?? ''),
       );
@@ -46,6 +46,7 @@ export default function LoginPage() {
           <Link to="/" className="text-xs font-bold uppercase tracking-wide underline underline-offset-4">← Back to Spindrop</Link>
           <h2 className="mt-10 text-3xl font-bold lg:text-4xl">Sign in</h2>
           <p className="mt-2 text-sm text-stone-600">Welcome back. Enter your details below.</p>
+          <p className="mt-3 border border-black bg-brand-yellow px-3 py-2 text-xs">Demo account, stored only in this browser.</p>
           <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
             <label className="block text-xs font-bold uppercase tracking-wide" htmlFor="email">
               Email address

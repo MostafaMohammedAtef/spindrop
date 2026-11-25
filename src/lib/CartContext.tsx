@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { readJson, writeJson } from './storage';
 
 type CartItem = {
   recordId: string;
@@ -16,37 +17,40 @@ const cartStorageKey = 'spindrop.cart';
 const CartContext = createContext<CartContextValue | null>(null);
 
 function readCart(): CartItem[] {
-  try {
-    const storedItems: unknown = JSON.parse(localStorage.getItem(cartStorageKey) ?? '[]');
-    if (!Array.isArray(storedItems)) return [];
-    return storedItems.filter(
-      (item): item is CartItem =>
+  return readJson<CartItem[]>(cartStorageKey, (storedItems): storedItems is CartItem[] =>
+    Array.isArray(storedItems) && storedItems.every(
+      (item) =>
         typeof item === 'object' &&
         item !== null &&
         'recordId' in item &&
         'quantity' in item &&
         typeof item.recordId === 'string' &&
         typeof item.quantity === 'number' &&
-        item.quantity > 0,
-    );
-  } catch {
-    return [];
-  }
+        item.quantity >= 1,
+    ), []);
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>(readCart);
 
   useEffect(() => {
-    localStorage.setItem(cartStorageKey, JSON.stringify(items));
+    writeJson(cartStorageKey, items.map((item) => ({ ...item, quantity: Math.min(10, item.quantity) })));
   }, [items]);
+
+  useEffect(() => {
+    function syncCart(event: StorageEvent) {
+      if (event.key === cartStorageKey) setItems(readCart());
+    }
+    window.addEventListener('storage', syncCart);
+    return () => window.removeEventListener('storage', syncCart);
+  }, []);
 
   function addToCart(recordId: string) {
     setItems((currentItems) => {
       const existingItem = currentItems.find((item) => item.recordId === recordId);
       if (existingItem) {
         return currentItems.map((item) =>
-          item.recordId === recordId ? { ...item, quantity: item.quantity + 1 } : item,
+          item.recordId === recordId ? { ...item, quantity: Math.min(10, item.quantity + 1) } : item,
         );
       }
       return [...currentItems, { recordId, quantity: 1 }];
