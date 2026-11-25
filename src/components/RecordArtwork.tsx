@@ -8,9 +8,10 @@ type RecordArtworkProps = {
   width?: number;
   height?: number;
   loading?: 'eager' | 'lazy';
+  fetchPriority?: 'high' | 'low' | 'auto';
 };
 
-export default function RecordArtwork({ src, alt, className, width = 1200, height = 675, loading = 'lazy' }: RecordArtworkProps) {
+export default function RecordArtwork({ src, alt, className, width = 1200, height = 675, loading = 'lazy', fetchPriority = 'auto' }: RecordArtworkProps) {
   function useFallback(event: SyntheticEvent<HTMLImageElement>) {
     const image = event.currentTarget;
     if (image.dataset.fallbackApplied !== 'true') {
@@ -19,5 +20,5 @@ export default function RecordArtwork({ src, alt, className, width = 1200, heigh
     }
   }
 
-  return <img src={src} alt={alt} width={width} height={height} loading={loading} decoding="async" onError={useFallback} className={className} />;
+  return <img src={src} alt={alt} width={width} height={height} loading={loading} fetchPriority={fetchPriority} decoding="async" onError={useFallback} className={className} />;
 }

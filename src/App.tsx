@@ -30,11 +30,13 @@ const DemoOrdersPage = lazy(() => import('./components/DemoOrdersPage'))
 const DemoProtectedRoute = lazy(() => import('./components/DemoProtectedRoute'))
 import { CartProvider } from './lib/CartContext'
 import { PricingProvider } from './lib/PricingContext'
+import homeHeroImage from './assets/optimized/vinyl-stack.webp'
 
 function HomePage() {
   usePageTitle('Home')
   return (
     <main id="main-content">
+      <link rel="preload" as="image" href={homeHeroImage} fetchPriority="high" />
       <h1 className="sr-only">Press your music on vinyl</h1>
       <WhyHero />
       <SplitCards />

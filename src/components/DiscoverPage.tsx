@@ -91,7 +91,7 @@ export default function DiscoverPage() {
             <article key={record.id} className={`flex flex-col border-b border-black p-5 lg:border-r lg:p-7 ${isLastRow ? 'lg:border-b-0' : ''} ${index % 3 === 2 ? 'lg:border-r-0' : ''}`}>
               <div className={`relative flex aspect-square items-center justify-center overflow-hidden border border-black ${record.background}`}>
                 <span className="absolute left-4 top-4 border border-black bg-white px-2 py-1 text-[0.6rem] font-bold uppercase tracking-wide">Community press</span>
-                <RecordArtwork src={record.image} alt={`${record.title} vinyl record artwork`} className="h-[86%] w-[86%] object-contain drop-shadow-xl" />
+                <RecordArtwork src={record.image} alt={`${record.title} vinyl record artwork`} className="h-[86%] w-[86%] object-contain drop-shadow-xl" loading={index === 0 ? 'eager' : 'lazy'} fetchPriority={index === 0 ? 'high' : 'auto'} />
                 <button type="button" onClick={() => wishlist.toggle(record.id)} aria-label={`Save ${record.title}`} aria-pressed={wishlist.has(record.id)} className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-full border border-black bg-white"><Heart size={19} fill={wishlist.has(record.id) ? 'currentColor' : 'none'} className={wishlist.has(record.id) ? 'text-brand-pink' : ''} /></button>
                 <span className="absolute bottom-4 right-4 rounded-full bg-black px-3 py-1 text-[0.6rem] font-bold uppercase tracking-wide text-white">Side A</span>
               </div>

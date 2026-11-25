@@ -1,10 +1,2 @@
 User-agent: *
 Allow: /
-Disallow: /account
-Disallow: /cart
-Disallow: /checkout
-Disallow: /create-account
-Disallow: /login
-Disallow: /orders
-Disallow: /sign-in
-Disallow: /wishlist

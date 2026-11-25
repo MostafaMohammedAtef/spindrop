@@ -34,7 +34,7 @@ for (const file of inputFiles) {
   const outputName = `${path.parse(file).name}.webp`;
   const outputPath = path.join(outputFolder, outputName);
   await sharp(sourcePath)
-    .resize(1800, 1800, { fit: 'inside', withoutEnlargement: true })
+    .resize(800, 1200, { fit: 'inside', withoutEnlargement: true })
     .webp({ quality: 82 })
     .toFile(outputPath);
   const info = await sharp(outputPath).metadata();
