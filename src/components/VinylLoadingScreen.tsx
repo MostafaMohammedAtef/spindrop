@@ -1,10 +1,8 @@
-import logo from '../../public/spindrop-icon-default.png';
-
-export default function VinylLoadingScreen() {
+export default function VinylLoadingScreen({ isLeaving = false }: { isLeaving?: boolean }) {
   return (
-    <div className="vinyl-loading-screen" role="status" aria-live="polite">
+    <div className={`vinyl-loading-screen ${isLeaving ? 'is-leaving' : ''}`} role="status" aria-live="polite">
       <div className="vinyl-loading-brand">
-        <img src={logo} alt="" />
+        <img src="/spindrop-icon-default.webp" alt="" width="40" height="40" fetchPriority="high" />
         <span>SPINDROP</span>
       </div>
 

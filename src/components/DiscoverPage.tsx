@@ -7,10 +7,13 @@ import CurrencyCountrySelector from './CurrencyCountrySelector';
 import ArtistLinks from './ArtistLinks';
 import { useWishlist } from '../hooks/useWishlist';
 import { Link } from 'react-router-dom';
+import RecordArtwork from './RecordArtwork';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const recordsPerPage = 18;
 
 export default function DiscoverPage() {
+  usePageTitle('Discover');
   const { addToCart, items } = useCart();
   const { formatPrice, country, rateStatus, isCurrencyAvailable } = usePricing();
   const wishlist = useWishlist();
@@ -29,19 +32,19 @@ export default function DiscoverPage() {
   );
 
   return (
-    <main className="bg-white text-black">
+    <main id="main-content" className="bg-white text-black">
       <section className="relative isolate z-30 border-b border-black bg-palette-11 px-6 py-12 lg:px-12 lg:py-20">
         <div className="relative z-10">
           <p className="inline-block border border-black bg-white px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-wide">The Spindrop shop</p>
           <div className="mt-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
-              <h1 className="max-w-3xl text-4xl font-bold leading-tight lg:text-6xl">Find your next favorite record.</h1>
+              <h1 tabIndex={-1} className="max-w-3xl text-4xl font-bold leading-tight lg:text-6xl">Find your next favorite record.</h1>
               <p className="mt-4 max-w-xl text-sm leading-relaxed lg:text-base">Independent sounds, pressed with care. Browse the latest records from the Spindrop community.</p>
             </div>
             <div className="flex flex-col gap-3 lg:items-end">
               <p className="text-xs font-bold uppercase tracking-wide">{records.length} records to discover</p>
               <CurrencyCountrySelector />
-              <p className="text-[0.65rem] leading-relaxed">Demo prices · {country.currency === 'USD' ? 'Shown in USD' : rateStatus === 'loading' ? 'Loading currency conversion…' : rateStatus === 'fallback' || !isCurrencyAvailable ? 'Showing USD; conversion rates unavailable' : `Estimated in ${country.currency} using reference rates`}</p>
+              <p className="text-[0.65rem] leading-relaxed">Demo prices · {country.currency === 'USD' ? 'Shown in USD' : rateStatus === 'loading' ? `Loading ${country.currency} reference rates…` : rateStatus === 'fallback' || !isCurrencyAvailable ? `Showing USD, rates unavailable for ${country.currency}` : `Estimated in ${country.currency} using reference rates`}</p>
             </div>
           </div>
         </div>
@@ -88,7 +91,7 @@ export default function DiscoverPage() {
             <article key={record.id} className={`flex flex-col border-b border-black p-5 lg:border-r lg:p-7 ${isLastRow ? 'lg:border-b-0' : ''} ${index % 3 === 2 ? 'lg:border-r-0' : ''}`}>
               <div className={`relative flex aspect-square items-center justify-center overflow-hidden border border-black ${record.background}`}>
                 <span className="absolute left-4 top-4 border border-black bg-white px-2 py-1 text-[0.6rem] font-bold uppercase tracking-wide">Community press</span>
-                <img src={record.image} alt={`${record.title} vinyl record artwork`} className="h-[86%] w-[86%] object-contain drop-shadow-xl" />
+                <RecordArtwork src={record.image} alt={`${record.title} vinyl record artwork`} className="h-[86%] w-[86%] object-contain drop-shadow-xl" />
                 <button type="button" onClick={() => wishlist.toggle(record.id)} aria-label={`Save ${record.title}`} aria-pressed={wishlist.has(record.id)} className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-full border border-black bg-white"><Heart size={19} fill={wishlist.has(record.id) ? 'currentColor' : 'none'} className={wishlist.has(record.id) ? 'text-brand-pink' : ''} /></button>
                 <span className="absolute bottom-4 right-4 rounded-full bg-black px-3 py-1 text-[0.6rem] font-bold uppercase tracking-wide text-white">Side A</span>
               </div>

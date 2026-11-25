@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { readJson, readString, writeJson, writeString } from './storage';
+import { formatMoney, quotePrice, type PriceQuote } from './pricing';
 
 export const marketCountries = [
   { code: 'US', name: 'United States', currency: 'USD', locale: 'en-US' },
@@ -36,6 +37,7 @@ type PricingContextValue = {
   country: MarketCountry;
   setCountryCode: (countryCode: string) => void;
   formatPrice: (amountInUsd: number) => string;
+  quotePrice: (amountInUsd: number) => PriceQuote;
   isCurrencyAvailable: boolean;
   rateStatus: 'loading' | 'ready' | 'fallback';
 };
@@ -61,8 +63,12 @@ function getInitialCountryCode() {
 }
 
 function readFreshRates() {
-  const cached = readJson(ratesStorageKey, (value): value is { rates: Record<string, number>; timestamp: number } => typeof value === 'object' && value !== null && 'rates' in value && 'timestamp' in value && typeof value.timestamp === 'number' && typeof value.rates === 'object' && value.rates !== null, { rates: { USD: 1 }, timestamp: 0 });
-  return Date.now() - cached.timestamp < 12 * 60 * 60 * 1000 ? cached.rates : null;
+  const cached = readJson(ratesStorageKey, (value): value is { rates: Record<string, number>; timestamp: number } => {
+    if (typeof value !== 'object' || value === null || !('rates' in value) || !('timestamp' in value) || typeof value.timestamp !== 'number' || value.timestamp > Date.now() || !Number.isFinite(value.timestamp) || typeof value.rates !== 'object' || value.rates === null) return false;
+    const entries = Object.entries(value.rates);
+    return entries.length <= 100 && entries.every(([currency, rate]) => currency.length === 3 && typeof rate === 'number' && Number.isFinite(rate) && rate > 0);
+  }, { rates: { USD: 1 }, timestamp: 0 });
+  return Date.now() - cached.timestamp >= 0 && Date.now() - cached.timestamp < 12 * 60 * 60 * 1000 ? cached.rates : null;
 }
 
 export function PricingProvider({ children }: { children: ReactNode }) {
@@ -132,15 +138,10 @@ export function PricingProvider({ children }: { children: ReactNode }) {
     setCountryCode: updateCountry,
     rateStatus,
     isCurrencyAvailable,
+    quotePrice: (amountInUsd) => quotePrice(amountInUsd, country, rates),
     formatPrice: (amountInUsd) => {
-      const rate = rates[country.currency];
-      const currency = rate ? country.currency : 'USD';
-      const amount = rate ? amountInUsd * rate : amountInUsd;
-      const formatted = new Intl.NumberFormat(country.locale, {
-        style: 'currency',
-        currency,
-      }).format(amount);
-      return rate ? `approx. ${formatted}` : formatted;
+      const quote = quotePrice(amountInUsd, country, rates);
+      return formatMoney(quote.amount, quote.currency, quote.locale, quote.approximate);
     },
   }), [country, isCurrencyAvailable, rates, rateStatus]);
 

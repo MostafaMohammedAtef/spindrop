@@ -1,6 +1,6 @@
 import SectionTag from './SectionTag';
-import retailLogos from '../assets/our-sponsers.png';
-import helpPhoto from '../assets/here-to-help.jpg';
+import retailLogos from '../assets/optimized/our-sponsers.webp';
+import helpPhoto from '../assets/optimized/here-to-help.webp';
 
 const panels = [
   {
@@ -8,6 +8,8 @@ const panels = [
     title: 'Worldwide distribution, simplified.',
     text: 'Get direct access to over 150 retail partners around the world.',
     image: retailLogos,
+    width: 1637,
+    height: 961,
     alt: 'Logos of retail partners: Jet Set, Think Indie, Vindig, HHV and Juno Records',
     imageStyle: 'object-contain',
     style: 'bg-black text-white',
@@ -17,7 +19,9 @@ const panels = [
     title: 'Here to help, whenever you need it.',
     text: 'Whether you are an artist mid-project or a fan with a question about an order, our team is ready to help.',
     image: helpPhoto,
-    alt: 'Purple and yellow vinyl records lying on top of each other',
+    width: 5472,
+    height: 3648,
+    alt: 'Customer listening to a vinyl record at home',
     imageStyle: 'border border-black object-cover',
     style: 'bg-brand-pink text-black',
   },
@@ -36,6 +40,10 @@ export default function RetailSupport() {
               <img
                 src={panel.image}
                 alt={panel.alt}
+                width={panel.width}
+                height={panel.height}
+                loading="lazy"
+                decoding="async"
                 className={`h-full w-full ${panel.imageStyle}`}
               />
             </div>

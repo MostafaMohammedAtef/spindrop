@@ -1,0 +1,3 @@
+export default function RouteLoadingFallback() {
+  return <main id="main-content" aria-busy="true" aria-live="polite" className="mx-auto min-h-[60svh] max-w-7xl px-6 py-12"><p className="text-xs font-bold uppercase">Loading page</p><div className="mt-6 h-12 max-w-md bg-palette-133" /><div className="mt-4 h-5 max-w-xl bg-palette-134" /><div className="mt-10 grid gap-4 lg:grid-cols-3"><div className="aspect-square border border-black bg-palette-133" /><div className="aspect-square border border-black bg-palette-133" /><div className="aspect-square border border-black bg-palette-133" /></div></main>;
+}

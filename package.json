@@ -9,6 +9,8 @@
     "lint": "oxlint",
     "test": "vitest run",
     "convert:vinyls": "node scripts/convert-vinyls.mjs",
+    "convert:site-images": "node scripts/convert-site-images.mjs",
+    "create:og-image": "node scripts/create-og-image.mjs",
     "preview": "vite preview"
   },
   "dependencies": {

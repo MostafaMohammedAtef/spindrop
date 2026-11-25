@@ -1,4 +1,4 @@
-import footerImage from '../assets/footer-img.png';
+import footerImage from '../assets/optimized/footer-img.webp';
 import { useState, type FormEvent } from 'react';
 import { readJson, writeJson } from '../lib/storage';
 
@@ -58,7 +58,7 @@ export default function Footer() {
       </form>
 
       <div className="mt-16 flex flex-col items-start justify-between gap-10 lg:flex-row lg:items-end">
-        <img src={footerImage} alt="Spindrop — Music in your hands" className="w-full max-w-md" />
+        <img src={footerImage} alt="Spindrop, music in your hands" width="1969" height="799" loading="lazy" decoding="async" className="w-full max-w-md" />
         <div className="flex flex-col gap-6 text-xs lg:items-end">
           <div className="flex gap-5 text-sm font-bold">
             <a href="#" aria-label="Facebook">f</a>

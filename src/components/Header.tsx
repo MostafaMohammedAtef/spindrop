@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Heart, ShoppingCart } from 'lucide-react';
-import logo from '../../public/spindrop-icon-default.png';
 import { getDemoSession, signOutDemoAccount, subscribeToDemoAuth } from '../lib/demoAuth';
 import { useCart } from '../lib/CartContext';
 import { useWishlist } from '../hooks/useWishlist';
+import InstantSearchDialog from './InstantSearchDialog';
 
 const links = [
   { label: 'Discover', to: '/discover' },
@@ -16,10 +16,13 @@ const links = [
 
 export default function Header() {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [firstName, setFirstName] = useState(() => getDemoSession()?.name.trim().split(/\s+/)[0] ?? '');
   const { itemCount } = useCart();
   const wishlist = useWishlist();
   const { pathname } = useLocation();
+  const closeSearch = useCallback(() => setSearchOpen(false), []);
 
   function isCurrentPage(label: string) {
     if (label === 'Discover') return pathname === '/discover';
@@ -33,30 +36,60 @@ export default function Header() {
     setFirstName(getDemoSession()?.name.trim().split(/\s+/)[0] ?? '');
   }), []);
 
+  useEffect(() => {
+    function openSearchShortcut(event: KeyboardEvent) {
+      const target = event.target;
+      const isTyping = target instanceof HTMLElement && (target.isContentEditable || ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName));
+      if (event.key === '/' && !isTyping && !event.metaKey && !event.ctrlKey && !event.altKey) {
+        event.preventDefault();
+        setSearchOpen(true);
+      }
+    }
+    window.addEventListener('keydown', openSearchShortcut);
+    return () => window.removeEventListener('keydown', openSearchShortcut);
+  }, []);
+
+  useEffect(() => {
+    if (!accountMenuOpen) return;
+    function closeMenu(event: KeyboardEvent) {
+      if (event.key === 'Escape') setAccountMenuOpen(false);
+    }
+    window.addEventListener('keydown', closeMenu);
+    return () => window.removeEventListener('keydown', closeMenu);
+  }, [accountMenuOpen]);
+
   return (
     <header className="sticky top-0 z-40 bg-white">
       <div className="mx-auto grid h-16 max-w-screen-2xl grid-cols-[1fr_auto_1fr] items-center px-6 lg:h-20 lg:px-12">
-        <a href="/" className="group justify-self-start">
+        <Link to="/" aria-label="Spindrop home" className="group justify-self-start">
           <img
-            src={logo}
+            src="/spindrop-icon-default.webp"
             alt=""
+            width="40"
+            height="40"
+            fetchPriority="high"
             className="h-9 w-9 group-hover:hidden group-active:hidden lg:h-10 lg:w-10"
           />
           <img
-            src="/spindrop-icon-yellow.png"
+            src="/spindrop-icon-yellow.webp"
             alt=""
+            width="40"
+            height="40"
             className="hidden h-9 w-9 group-hover:block group-active:hidden lg:h-10 lg:w-10"
           />
           <img
-            src="/spindrop-icon-pink.png"
+            src="/spindrop-icon-pink.webp"
             alt=""
+            width="40"
+            height="40"
             className="hidden h-9 w-9 group-active:block lg:h-10 lg:w-10"
           />
-        </a>
+        </Link>
 
         <nav className="hidden items-center gap-10 text-sm font-medium uppercase lg:flex">
           {links.map((link) => {
             const active = isCurrentPage(link.label);
+            if (link.label === 'Search') return <button key={link.label} type="button" onClick={() => setSearchOpen(true)} className="inline-flex items-center gap-2 border-b-2 border-transparent pb-1 text-sm font-medium uppercase hover:border-black">Search</button>;
             return (
               <Link
                 key={link.label}
@@ -68,6 +101,7 @@ export default function Header() {
               >
                 {link.label === 'Cart' ? <ShoppingCart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label === 'Wishlist' ? <Heart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label}
                 {link.label === 'Cart' && itemCount > 0 && <span className="text-[0.65rem]">{itemCount}</span>}
+                {link.label === 'Cart' && <span aria-live="polite" aria-atomic="true" className="sr-only">Cart contains {itemCount} items</span>}
               </Link>
             );
           })}
@@ -76,7 +110,10 @@ export default function Header() {
         <div className="hidden items-center gap-6 justify-self-end lg:flex">
           {firstName ? (
             <>
-              <span className="text-sm font-medium">Hi, {firstName}</span>
+              <div className="relative">
+                <button type="button" aria-expanded={accountMenuOpen} aria-controls="header-account-menu" onClick={() => setAccountMenuOpen((isOpen) => !isOpen)} className="text-sm font-medium">Hi, {firstName}</button>
+                {accountMenuOpen && <nav id="header-account-menu" aria-label="Account menu" className="absolute right-0 top-full z-50 mt-4 min-w-44 border border-black bg-white p-2 shadow-[4px_4px_0_#000]"><Link to="/account" onClick={() => setAccountMenuOpen(false)} className="block px-3 py-3 text-sm hover:bg-brand-yellow">Account</Link><Link to="/orders" onClick={() => setAccountMenuOpen(false)} className="block px-3 py-3 text-sm hover:bg-brand-yellow">Orders</Link><button type="button" onClick={() => { signOutDemoAccount(); setAccountMenuOpen(false); }} className="block w-full px-3 py-3 text-left text-sm hover:bg-brand-yellow">Sign out</button></nav>}
+              </div>
               <button type="button" onClick={signOutDemoAccount} className="text-sm font-medium uppercase hover:underline">Sign out</button>
             </>
           ) : (
@@ -104,9 +141,10 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="fixed bottom-0 left-0 right-0 top-16 flex flex-col border-b border-black bg-white px-6 pb-6 pt-2 lg:hidden">
+        <nav className="fixed bottom-0 left-0 right-0 top-16 flex flex-col border-b border-black bg-white px-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] pt-2 lg:hidden">
           {links.map((link) => {
             const active = isCurrentPage(link.label);
+            if (link.label === 'Search') return <button key={link.label} type="button" onClick={() => { setSearchOpen(true); setOpen(false); }} className="flex items-center gap-3 border-b border-transparent py-3 text-sm font-medium uppercase">Search</button>;
             return (
               <Link
                 key={link.label}
@@ -130,6 +168,8 @@ export default function Header() {
           </Link>
           {firstName ? (
             <>
+              <Link to="/account" onClick={() => setOpen(false)} className="border-b border-transparent py-3 text-sm font-medium uppercase">Account</Link>
+              <Link to="/orders" onClick={() => setOpen(false)} className="border-b border-transparent py-3 text-sm font-medium uppercase">Orders</Link>
               <span className="mt-3 py-3 text-center text-sm font-medium">Hi, {firstName}</span>
               <button type="button" onClick={() => { signOutDemoAccount(); setOpen(false); }} className="py-3 text-center text-sm font-medium uppercase">Sign out</button>
             </>
@@ -138,6 +178,7 @@ export default function Header() {
           )}
         </nav>
       )}
+      <InstantSearchDialog open={searchOpen} onClose={closeSearch} />
     </header>
   );
 }

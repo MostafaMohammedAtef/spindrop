@@ -1,6 +1,6 @@
 # Spindrop
 
-Spindrop is a responsive vinyl-record landing page built with React, TypeScript, Vite, and Tailwind CSS v4.
+Spindrop is a client-side vinyl storefront demo built with React, TypeScript, Vite, React Router, and Tailwind CSS v4. It has no backend, real authentication, payments, or fulfillment.
 
 ## Technologies
 
@@ -24,6 +24,15 @@ Spindrop is a responsive vinyl-record landing page built with React, TypeScript,
 - Artist marquee and testimonial selector
 - Vinyl Studio showcase with rotating record artwork
 - Responsive footer
+- Discover catalog with price sorting, currency estimates, and cart actions
+- Sortable artist collections and detailed record pages
+- Keyboard-accessible instant search with saved recent searches
+- Persistent cart with quantity controls, undo, free-shipping estimate, and mini-cart
+- Wishlist, recently viewed records, account profile, demo checkout, and order history
+- Country-based approximate prices with a USD fallback when rates are unavailable
+- Local newsletter signup and accessible toast/dialog feedback
+- Optimized WebP artwork with a broken-image fallback
+- Vercel deep-link routing and GitHub Actions checks
 
 ## Requirements
 
@@ -48,6 +57,10 @@ npm run dev      # Start the development server
 npm run build    # Type-check and build for production
 npm run preview  # Preview the production build locally
 npm run lint     # Run Oxlint
+npm test         # Run unit tests
+npm run convert:vinyls # Convert backend vinyl images to WebP
+npm run convert:site-images # Rebuild optimized site artwork
+npm run create:og-image # Rebuild the social preview image
 ```
 
 ## Production deployment
@@ -71,3 +84,21 @@ src/
   App.tsx       Page section order
   index.css     Tailwind imports, theme colors, and animations
 ```
+
+## Routes
+
+- `/` landing page
+- `/discover` record catalog
+- `/records/:slug` record details
+- `/artists/:artistSlug` artist collection
+- `/cart`, `/wishlist`, `/checkout`, `/order/:id`
+- `/login`, `/sign-in` (redirects to `/login`), `/create-account`
+- `/account` and `/orders` (demo account required)
+
+## Browser-only demo data
+
+All data is demo-only and stored in this browser. There is no real account service, checkout, payment, shipping, or order fulfillment. Local storage keys include `spindrop.cart`, `spindrop.market-country`, `spindrop.market-rates`, `spindrop.demo.accounts`, `spindrop.demo.session`, `spindrop.wishlist`, `spindrop.recently-viewed`, `spindrop.recent-searches`, `spindrop.orders`, and `spindrop.newsletter`. The loading screen's once-per-session flag uses session storage.
+
+Demo account passwords use PBKDF2 with SHA-256, 210,000 iterations, and a unique 16-byte salt per account. Existing plaintext demo accounts migrate after a successful sign-in. Currency estimates use the public Frankfurter rates API and are not live transaction prices.
+
+Unit tests cover browser storage, cart quantity rules, price formatting and fallback behavior, search ranking, password hashing, and the legacy password migration.

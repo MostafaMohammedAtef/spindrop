@@ -1,10 +1,10 @@
 import { marketCountries, usePricing } from '../lib/PricingContext';
 
 export default function CurrencyCountrySelector() {
-  const { country, setCountryCode, isCurrencyAvailable } = usePricing();
+  const { country, setCountryCode, isCurrencyAvailable, rateStatus } = usePricing();
 
   return (
-    <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center">
+    <div className="flex flex-col items-start gap-2 lg:flex-row lg:items-center">
     <label className="flex items-center gap-3 text-[0.65rem] font-bold uppercase tracking-wide">
       Prices for
       <select
@@ -20,7 +20,8 @@ export default function CurrencyCountrySelector() {
         ))}
       </select>
     </label>
-    {!isCurrencyAvailable && <span className="text-[0.65rem] font-medium normal-case">Showing USD, rates unavailable for {country.currency}</span>}
+    {country.currency !== 'USD' && rateStatus === 'loading' && <span className="text-[0.65rem] font-medium normal-case">Loading {country.currency} reference rates…</span>}
+    {country.currency !== 'USD' && (rateStatus === 'fallback' || (rateStatus === 'ready' && !isCurrencyAvailable)) && <span className="text-[0.65rem] font-medium normal-case">Showing USD, rates unavailable for {country.currency}</span>}
     </div>
   );
 }

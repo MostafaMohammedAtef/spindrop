@@ -1,6 +1,6 @@
 import PillButton from './PillButton';
-import crowdfunding from '../assets/crowdfunding.png';
-import pressAndSell from '../assets/press-and-sell.png';
+import crowdfunding from '../assets/optimized/crowdfunding.webp';
+import pressAndSell from '../assets/optimized/press-and-sell.webp';
 
 const cards = [
   {
@@ -38,6 +38,10 @@ export default function SplitCards() {
             <img
               src={card.image}
               alt={card.alt}
+              width="1254"
+              height="1254"
+              loading="lazy"
+              decoding="async"
               className="mt-10 h-56 w-auto max-w-full object-contain lg:h-72"
             />
             <PillButton className="mt-auto">Learn more</PillButton>

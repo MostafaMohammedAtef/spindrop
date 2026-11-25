@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import dollar from '../assets/vinyl-dollar.png';
-import sparkles from '../assets/vinyl-sparkles.png';
+import dollar from '../assets/icons/vinyl-dollar.webp';
+import sparkles from '../assets/icons/vinyl-sparkles.webp';
 
 const records = Object.entries(
   import.meta.glob<string>(
-    '../../backend/vinyl-images/*.{png,jpg,jpeg,webp,avif}',
+    '../assets/vinyls/*.webp',
     {
     eager: true,
     import: 'default',
-    query: '?url',
     },
   ),
 )
+  .filter(([file]) => !file.endsWith('/placeholder.webp'))
   .sort(([first], [second]) => first.localeCompare(second))
   .map(([, image]) => image);
 const positions = [
@@ -28,6 +28,7 @@ export default function VinylStudio() {
   const [doodle, setDoodle] = useState({ icon: 0, position: 0 });
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const timer = window.setInterval(() => {
       setRecordIndex((index) => (index + 1) % records.length);
     }, 1000);
@@ -35,6 +36,7 @@ export default function VinylStudio() {
   }, []);
 
   useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     const timer = window.setInterval(() => {
       setDoodle({
         icon: Math.floor(Math.random() * 2),
@@ -52,7 +54,7 @@ export default function VinylStudio() {
       <h2 className="mt-6 text-3xl font-bold leading-tight lg:text-4xl">
         Make it real with
         <br />
-        Qrates Vinyl Studio
+        Spindrop Vinyl Studio
         <svg
           viewBox="0 0 240 18"
           aria-hidden="true"
@@ -75,11 +77,19 @@ export default function VinylStudio() {
         <img
           src={records[recordIndex]}
           alt={`Vinyl record design ${recordIndex + 1}`}
+          width="1200"
+          height="675"
+          loading="lazy"
+          decoding="async"
           className="relative z-10 h-[115%] max-w-[130vw] object-contain lg:h-[125%] lg:max-w-[110vw]"
         />
         <img
           src={doodle.icon === 0 ? dollar : sparkles}
           alt=""
+          width={doodle.icon === 0 ? 4274 : 4049}
+          height={doodle.icon === 0 ? 4583 : 5316}
+          loading="lazy"
+          decoding="async"
           className={`pointer-events-none absolute z-20 w-14 lg:w-20 ${positions[doodle.position]}`}
         />
       </div>

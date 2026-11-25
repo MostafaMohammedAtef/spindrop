@@ -1,7 +1,7 @@
 import SectionTag from './SectionTag'
 import RoundBadge from './RoundBadge'
-import vinylStack from '../assets/vinyl-stack.jpg'
-import vinylSleeve from '../assets/vinyl-sleeve.jpg'
+import vinylStack from '../assets/optimized/vinyl-stack.webp'
+import vinylSleeve from '../assets/optimized/vinyl-sleeve.webp'
 
 export default function WhyHero() {
   return (
@@ -59,12 +59,21 @@ export default function WhyHero() {
             <img
               src={vinylStack}
               alt="Artist sitting on a chair holding a vinyl record"
+              width="4732"
+              height="7090"
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
               className="absolute right-[2%] top-8 z-10 aspect-[3/4] w-[54%] rotate-[4deg] border-2 border-black object-cover lg:right-0 lg:top-10 lg:aspect-[4/5] lg:w-[62%] lg:rotate-[3deg]"
             />
 
             <img
               src={vinylSleeve}
               alt="Hand placing a needle on a red vinyl record"
+              width="4000"
+              height="6000"
+              loading="lazy"
+              decoding="async"
               className="absolute -bottom-8 left-[6%] z-20 aspect-[4/5] w-[52%] -rotate-[3deg] border-2 border-black object-cover object-top lg:-bottom-12 lg:left-[2%] lg:aspect-[3/4] lg:w-[46%] lg:-rotate-[10deg]"
             />
 

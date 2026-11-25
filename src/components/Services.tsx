@@ -2,7 +2,7 @@ import SectionTag from './SectionTag';
 import PillButton from './PillButton';
 import Accordion from './Accordion';
 import type { AccordionGroup } from './Accordion';
-import studio from '../assets/you-do-the-music-we-do-the-rest.jpg';
+import studio from '../assets/optimized/you-do-the-music-we-do-the-rest.webp';
 
 const groups: AccordionGroup[] = [
   {
@@ -75,6 +75,10 @@ export default function Services() {
           <img
             src={studio}
             alt="Musician wearing headphones playing a keyboard in a studio"
+            width="3704"
+            height="5556"
+            loading="lazy"
+            decoding="async"
             className="mt-8 aspect-[3/4] w-56 rotate-[4deg] border-2 border-black object-cover lg:w-72"
           />
           <p className="mt-12 max-w-sm text-sm leading-relaxed">

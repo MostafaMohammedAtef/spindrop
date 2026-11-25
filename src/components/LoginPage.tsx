@@ -1,10 +1,13 @@
 import { useState, type FormEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { signInDemoAccount } from '../lib/demoAuth';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 export default function LoginPage() {
+  usePageTitle('Sign in');
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -15,22 +18,23 @@ export default function LoginPage() {
         String(formData.get('email') ?? ''),
         String(formData.get('password') ?? ''),
       );
-      navigate('/');
+      const next = new URLSearchParams(location.search).get('next');
+      navigate(next === '/account' || next === '/orders' ? next : '/');
     } catch (submitError) {
       setError(submitError instanceof Error ? submitError.message : 'Could not sign in.');
     }
   }
 
   return (
-    <main className="grid min-h-[calc(100svh-5rem)] grid-cols-1 border-b border-black lg:grid-cols-2">
+    <main id="main-content" className="grid min-h-[calc(100svh-5rem)] grid-cols-1 border-b border-black lg:grid-cols-2">
       <section className="relative flex min-h-80 flex-col justify-between overflow-hidden bg-palette-31 p-8 text-white lg:min-h-full lg:p-12 2xl:p-16">
         <div className="relative z-10 flex items-center gap-3">
-          <img src="/spindrop-icon-default.png" alt="" className="h-10 w-10 rounded-full bg-white p-1" />
+          <img src="/spindrop-icon-default.webp" alt="" width="40" height="40" className="h-10 w-10 rounded-full bg-white p-1" />
           <span className="text-sm font-bold uppercase tracking-[0.18em]">Spindrop</span>
         </div>
         <div className="relative z-10 my-14 lg:my-0">
           <p className="inline-block border border-white px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-wide">Welcome back</p>
-          <h1 className="mt-6 max-w-lg text-4xl font-bold leading-[0.98] lg:text-6xl 2xl:text-7xl">
+          <h1 tabIndex={-1} className="mt-6 max-w-lg text-4xl font-bold leading-[0.98] lg:text-6xl 2xl:text-7xl">
             Your next record starts here.
           </h1>
           <p className="mt-5 max-w-md text-sm leading-relaxed text-white/80 lg:text-base">

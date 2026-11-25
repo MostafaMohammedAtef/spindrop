@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import SectionTag from './SectionTag';
 import { sol, mayaewk } from '../data/artists';
-import solPhoto from '../assets/artist-sol.png';
-import mayaewkPhoto from '../assets/artist-mayaewk.png';
+import solPhoto from '../assets/optimized/artist-sol.webp';
+import mayaewkPhoto from '../assets/optimized/artist-mayaewk.webp';
 
 const slides = [
   {
@@ -78,6 +78,10 @@ export default function ArtistTestimonials() {
           key={slide.artist.name}
           src={slide.photo}
           alt={slide.alt}
+          width={index === 0 ? 471 : 550}
+          height={index === 0 ? 590 : 736}
+          loading="lazy"
+          decoding="async"
           className="block h-auto w-full lg:absolute lg:inset-0 lg:h-full lg:object-cover lg:object-[50%_60%]"
         />
       </div>

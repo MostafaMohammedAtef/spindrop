@@ -1,15 +1,17 @@
 import SectionTag from './SectionTag';
 import PillButton from './PillButton';
-import peekIcon from '../assets/peek-icon.png';
-import imageOne from '../assets/image-one.png';
-import imageTwo from '../assets/image-two.png';
-import imageThree from '../assets/image-three.png';
-import imageFour from '../assets/image-four.png';
-import imageFive from '../assets/image-five.png';
+import peekIcon from '../assets/optimized/peek-icon.webp';
+import imageOne from '../assets/optimized/image-one.webp';
+import imageTwo from '../assets/optimized/image-two.webp';
+import imageThree from '../assets/optimized/image-three.webp';
+import imageFour from '../assets/optimized/image-four.webp';
+import imageFive from '../assets/optimized/image-five.webp';
 
 const photos = [
   {
     src: imageOne,
+    width: 707,
+    height: 712,
     alt: 'Man smiling in a garden holding a vinyl record, with a dog in front of him',
     href: 'https://open.spotify.com/album/3YTJ6azaXjOBrr60oPwYYU',
     platform: 'Spotify',
@@ -17,6 +19,8 @@ const photos = [
   },
   {
     src: imageTwo,
+    width: 355,
+    height: 355,
     alt: 'Person in a white cat mask holding a blue record over a pile of photos',
     href: 'https://open.spotify.com/playlist/5rA1iEiH9aWJTpGPDOfk6n',
     platform: 'Spotify',
@@ -24,6 +28,8 @@ const photos = [
   },
   {
     src: imageThree,
+    width: 473,
+    height: 475,
     alt: 'Person in overalls holding an album cover in front of their face',
     href: 'https://open.spotify.com/track/0bsR8k20ADjBCdOOAntDyi',
     platform: 'Spotify',
@@ -31,6 +37,8 @@ const photos = [
   },
   {
     src: imageFour,
+    width: 477,
+    height: 472,
     alt: 'Woman sitting on a wicker chair holding a record sleeve',
     href: 'https://www.youtube.com/watch?v=CF7Y7AedcsQ',
     platform: 'YouTube',
@@ -38,6 +46,8 @@ const photos = [
   },
   {
     src: imageFive,
+    width: 476,
+    height: 472,
     alt: 'Man in sunglasses by a swimming pool holding a record and its sleeve',
     href: 'https://open.spotify.com/track/00HIh9mVUQQAycsQiciWsh',
     platform: 'Spotify',
@@ -66,6 +76,10 @@ export default function Community() {
         <img
           src={peekIcon}
           alt=""
+          width="1254"
+          height="1254"
+          loading="lazy"
+          decoding="async"
           className="pointer-events-none absolute bottom-[calc(100%-1.5rem)] right-[6%] z-20 w-16 lg:right-[10%] lg:w-24"
         />
         <div className="relative z-10 grid grid-cols-2 gap-px border border-black bg-black lg:grid-cols-4">
@@ -80,6 +94,10 @@ export default function Community() {
               <img
                 src={photo.src}
                 alt={photo.alt}
+                width={photo.width}
+                height={photo.height}
+                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
               />
               <span className="absolute bottom-3 left-3 rounded-full bg-white px-3 py-1 text-[0.65rem] font-bold uppercase tracking-wide text-black opacity-0 transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100">
