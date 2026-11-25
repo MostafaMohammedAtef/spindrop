@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
 import { readJson, writeJson } from './storage';
+import { useToast } from '../components/ToastProvider';
 
 type CartItem = {
   recordId: string;
@@ -31,6 +32,7 @@ function readCart(): CartItem[] {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const toast = useToast();
   const [items, setItems] = useState<CartItem[]>(readCart);
 
   useEffect(() => {
@@ -55,6 +57,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       }
       return [...currentItems, { recordId, quantity: 1 }];
     });
+    toast('Record added to your cart.', { label: 'View cart', run: () => { window.location.href = '/cart'; } });
   }
 
   function removeFromCart(recordId: string) {

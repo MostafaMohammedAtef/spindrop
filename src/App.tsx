@@ -13,6 +13,7 @@ import Footer from './components/Footer'
 import VinylLoadingScreen from './components/VinylLoadingScreen'
 import NotFoundPage from './components/NotFoundPage'
 import RouteErrorBoundary from './components/RouteErrorBoundary'
+import ToastProvider from './components/ToastProvider'
 const LoginPage = lazy(() => import('./components/LoginPage'))
 const CreateAccountPage = lazy(() => import('./components/CreateAccountPage'))
 const DiscoverPage = lazy(() => import('./components/DiscoverPage'))
@@ -73,6 +74,7 @@ function App() {
   return (
     <>
       {showLoader && !pageLoaded && <VinylLoadingScreen />}
+      <ToastProvider>
       <CartProvider>
         <PricingProvider>
           <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-white focus:px-4 focus:py-3 focus:ring-2 focus:ring-black">Skip to content</a>
@@ -105,6 +107,7 @@ function App() {
           </RouteErrorBoundary>
         </PricingProvider>
       </CartProvider>
+      </ToastProvider>
     </>
   )
 }
