@@ -1,41 +1,19 @@
 import { useEffect, useState } from 'react';
-import vinylOne from '../../backend/vinyl-images/vinyl-one.png';
-import vinylTwo from '../../backend/vinyl-images/vinyl-two.png';
-import vinylThree from '../../backend/vinyl-images/vinyl-three.png';
-import vinylFour from '../../backend/vinyl-images/vinyl-four.png';
-import vinylFive from '../../backend/vinyl-images/vinyl-five.png';
-import vinylSix from '../../backend/vinyl-images/vinyl-six.png';
-import afrotoKebda from '../../backend/vinyl-images/afroto-kebda.png';
-import btsSwim from '../../backend/vinyl-images/bts-swin.png';
-import fiveSOSYoungblood from '../../backend/vinyl-images/5sos-youngblood.png';
-import drakeDieTrying from '../../backend/vinyl-images/drake-die-trying.png';
-import essamSasa from '../../backend/vinyl-images/essam-sasa-one.png';
-import weekndStarboy from '../../backend/vinyl-images/weeknd-starboy.png';
-import oliviaRodrigo from '../../backend/vinyl-images/olivia-rodrigo-drop-head.png';
-import moscowDawly from '../../backend/vinyl-images/moscow-dawly.png';
-import justinBieber from '../../backend/vinyl-images/justin-bieber-swag.png';
-import houdaBondok from '../../backend/vinyl-images/houda-bondok-one.png';
 import dollar from '../assets/vinyl-dollar.png';
 import sparkles from '../assets/vinyl-sparkles.png';
 
-const records = [
-  vinylOne,
-  vinylTwo,
-  vinylThree,
-  vinylFour,
-  vinylFive,
-  vinylSix,
-  afrotoKebda,
-  btsSwim,
-  fiveSOSYoungblood,
-  drakeDieTrying,
-  essamSasa,
-  weekndStarboy,
-  oliviaRodrigo,
-  moscowDawly,
-  justinBieber,
-  houdaBondok,
-];
+const records = Object.entries(
+  import.meta.glob<string>(
+    '../../backend/vinyl-images/*.{png,jpg,jpeg,webp,avif}',
+    {
+    eager: true,
+    import: 'default',
+    query: '?url',
+    },
+  ),
+)
+  .sort(([first], [second]) => first.localeCompare(second))
+  .map(([, image]) => image);
 const positions = [
   'left-[3%] top-[4%]',
   'right-[3%] top-[4%]',

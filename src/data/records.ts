@@ -14,6 +14,8 @@ import oliviaRodrigoDropHead from '../../backend/vinyl-images/olivia-rodrigo-dro
 import moscowDawly from '../../backend/vinyl-images/moscow-dawly.png';
 import justinBieberSwag from '../../backend/vinyl-images/justin-bieber-swag.png';
 import houdaBondokOne from '../../backend/vinyl-images/houda-bondok-one.png';
+import akherZapheerBallet from '../../backend/vinyl-images/akher-zapheer-ballet.png';
+import akherZapheerBatlasha from '../../backend/vinyl-images/akher-zapheer-batlasha.png';
 
 export type RecordProduct = {
   id: string;
@@ -41,6 +43,8 @@ export const records: RecordProduct[] = [
   { id: 'moscow-dawly', title: 'Dawly', artists: ['Moscow', 'EL Waili'], image: moscowDawly, background: 'bg-palette-36', priceUsd: 20.99 },
   { id: 'justin-bieber-swag', title: 'Daisies', artists: ['Justin Bieber'], image: justinBieberSwag, background: 'bg-palette-30', priceUsd: 32.99 },
   { id: 'houda-bondok-one', title: 'خيبت توقعاتك', artists: ['Houda Bondok'], image: houdaBondokOne, background: 'bg-palette-05', priceUsd: 18.99 },
+  { id: 'akher-zapheer-ballet', title: 'Ballet (باليه)', artists: ['Akher Zapheer'], image: akherZapheerBallet, background: 'bg-palette-22', priceUsd: 23.99 },
+  { id: 'akher-zapheer-batlasha', title: 'Batlasha (بتلاشى)', artists: ['Akher Zapheer'], image: akherZapheerBatlasha, background: 'bg-palette-14', priceUsd: 21.99 },
 ];
 
 export function artistSlug(name: string) {

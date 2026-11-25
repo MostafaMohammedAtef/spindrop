@@ -29,18 +29,18 @@ export default function DiscoverPage() {
     <main className="bg-white text-black">
       <section className="relative isolate z-30 border-b border-black bg-palette-11 px-6 py-12 lg:px-12 lg:py-20">
         <div className="relative z-10">
-        <p className="inline-block border border-black bg-white px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-wide">The Spindrop shop</p>
-        <div className="mt-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div>
-            <h1 className="max-w-3xl text-4xl font-bold leading-tight lg:text-6xl">Find your next favorite record.</h1>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed lg:text-base">Independent sounds, pressed with care. Browse the latest records from the Spindrop community.</p>
+          <p className="inline-block border border-black bg-white px-2 py-1 text-[0.65rem] font-semibold uppercase tracking-wide">The Spindrop shop</p>
+          <div className="mt-6 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+              <h1 className="max-w-3xl text-4xl font-bold leading-tight lg:text-6xl">Find your next favorite record.</h1>
+              <p className="mt-4 max-w-xl text-sm leading-relaxed lg:text-base">Independent sounds, pressed with care. Browse the latest records from the Spindrop community.</p>
+            </div>
+            <div className="flex flex-col gap-3 lg:items-end">
+              <p className="text-xs font-bold uppercase tracking-wide">{records.length} records to discover</p>
+              <CurrencyCountrySelector />
+              <p className="text-[0.65rem] leading-relaxed">Demo prices · {country.currency === 'USD' ? 'Shown in USD' : rateStatus === 'loading' ? 'Loading currency conversion…' : rateStatus === 'fallback' || !isCurrencyAvailable ? 'Showing USD; conversion rates unavailable' : `Estimated in ${country.currency} using reference rates`}</p>
+            </div>
           </div>
-          <div className="flex flex-col gap-3 lg:items-end">
-            <p className="text-xs font-bold uppercase tracking-wide">{records.length} records to discover</p>
-            <CurrencyCountrySelector />
-            <p className="text-[0.65rem] leading-relaxed">Demo prices · {country.currency === 'USD' ? 'Shown in USD' : rateStatus === 'loading' ? 'Loading currency conversion…' : rateStatus === 'fallback' || !isCurrencyAvailable ? 'Showing USD; conversion rates unavailable' : `Estimated in ${country.currency} using reference rates`}</p>
-          </div>
-        </div>
         </div>
         <div className="absolute -bottom-6 right-8 z-20 lg:right-[12%]">
           <button
@@ -103,23 +103,9 @@ export default function DiscoverPage() {
 
       {pageCount > 1 && (
         <nav aria-label="Discover pages" className="flex items-center justify-center gap-5 border-b border-black px-6 py-8">
-          <button
-            type="button"
-            onClick={() => setCurrentPage((page) => Math.max(0, page - 1))}
-            disabled={currentPage === 0}
-            className="rounded-full border border-black px-6 py-3 text-xs font-bold uppercase tracking-wide disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Previous
-          </button>
+          <button type="button" onClick={() => setCurrentPage((page) => Math.max(0, page - 1))} disabled={currentPage === 0} className="rounded-full border border-black px-6 py-3 text-xs font-bold uppercase tracking-wide disabled:cursor-not-allowed disabled:opacity-40">Previous</button>
           <span className="text-xs font-bold uppercase tracking-wide">Page {currentPage + 1} of {pageCount}</span>
-          <button
-            type="button"
-            onClick={() => setCurrentPage((page) => Math.min(pageCount - 1, page + 1))}
-            disabled={currentPage === pageCount - 1}
-            className="rounded-full border border-black bg-palette-11 px-6 py-3 text-xs font-bold uppercase tracking-wide disabled:cursor-not-allowed disabled:opacity-40"
-          >
-            Next
-          </button>
+          <button type="button" onClick={() => setCurrentPage((page) => Math.min(pageCount - 1, page + 1))} disabled={currentPage === pageCount - 1} className="rounded-full border border-black bg-palette-11 px-6 py-3 text-xs font-bold uppercase tracking-wide disabled:cursor-not-allowed disabled:opacity-40">Next</button>
         </nav>
       )}
     </main>
