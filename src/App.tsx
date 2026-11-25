@@ -19,6 +19,11 @@ const CreateAccountPage = lazy(() => import('./components/CreateAccountPage'))
 const DiscoverPage = lazy(() => import('./components/DiscoverPage'))
 const CartPage = lazy(() => import('./components/CartPage'))
 const ArtistPage = lazy(() => import('./components/ArtistPage'))
+const RecordDetailPage = lazy(() => import('./components/RecordDetailPage'))
+const WishlistPage = lazy(() => import('./components/WishlistPage'))
+const AccountPage = lazy(() => import('./components/AccountPage'))
+const DemoCheckoutPage = lazy(() => import('./components/DemoCheckoutPage'))
+const DemoOrdersPage = lazy(() => import('./components/DemoOrdersPage'))
 import { CartProvider } from './lib/CartContext'
 import { PricingProvider } from './lib/PricingContext'
 function App() {
@@ -86,6 +91,12 @@ function App() {
           <Route path="/sign-in" element={<Navigate to="/login" replace />} />
           <Route path="/create-account" element={<CreateAccountPage />} />
           <Route path="/discover" element={<DiscoverPage />} />
+          <Route path="/records/:slug" element={<RecordDetailPage />} />
+          <Route path="/wishlist" element={<WishlistPage />} />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/orders" element={<DemoOrdersPage />} />
+          <Route path="/checkout" element={<DemoCheckoutPage />} />
+          <Route path="/order/:id" element={<DemoOrdersPage />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/artists/:artistSlug" element={<ArtistPage />} />
           <Route path="/" element={

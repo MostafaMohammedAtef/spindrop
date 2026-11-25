@@ -3,6 +3,7 @@ import ArtistLinks from './ArtistLinks';
 import { artistSlug, records } from '../data/records';
 import { useCart } from '../lib/CartContext';
 import { usePricing } from '../lib/PricingContext';
+import { Link as RouterLink } from 'react-router-dom';
 
 export default function ArtistPage() {
   const { artistSlug: requestedSlug } = useParams();
@@ -44,7 +45,7 @@ export default function ArtistPage() {
               </div>
               <div className="flex flex-1 flex-col pt-5">
                 <p className="text-[0.65rem] font-bold uppercase tracking-wide text-stone-600"><ArtistLinks artists={record.artists} /></p>
-                <h2 className="mt-1 text-xl font-bold">{record.title}</h2>
+                <h2 className="mt-1 text-xl font-bold"><RouterLink to={`/records/${record.id}`} className="hover:underline">{record.title}</RouterLink></h2>
                 <p className="mt-3 text-lg font-semibold">{formatPrice(record.priceUsd)}</p>
                 <button type="button" onClick={() => addToCart(record.id)} className="mt-5 w-full rounded-full bg-black px-5 py-3 text-xs font-bold uppercase tracking-wide text-white hover:bg-palette-31">
                   {cartItem ? `Add another · ${cartItem.quantity} in cart` : 'Add to cart'}

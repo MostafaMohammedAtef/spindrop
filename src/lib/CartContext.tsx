@@ -12,6 +12,8 @@ type CartContextValue = {
   itemCount: number;
   addToCart: (recordId: string) => void;
   removeFromCart: (recordId: string) => void;
+  setQuantity: (recordId: string, quantity: number) => void;
+  clearCart: () => void;
 };
 
 const cartStorageKey = 'spindrop.cart';
@@ -64,10 +66,19 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setItems((currentItems) => currentItems.filter((item) => item.recordId !== recordId));
   }
 
+  function setQuantity(recordId: string, quantity: number) {
+    const safeQuantity = Math.max(1, Math.min(10, Math.floor(quantity)));
+    setItems((currentItems) => currentItems.map((item) => item.recordId === recordId ? { ...item, quantity: safeQuantity } : item));
+  }
+
+  function clearCart() {
+    setItems([]);
+  }
+
   const itemCount = items.reduce((total, item) => total + item.quantity, 0);
 
   return (
-    <CartContext.Provider value={{ items, itemCount, addToCart, removeFromCart }}>
+    <CartContext.Provider value={{ items, itemCount, addToCart, removeFromCart, setQuantity, clearCart }}>
       {children}
     </CartContext.Provider>
   );

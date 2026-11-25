@@ -1,16 +1,19 @@
 import { useState } from 'react';
-import { ArrowDownWideNarrow } from 'lucide-react';
+import { ArrowDownWideNarrow, Heart } from 'lucide-react';
 import { useCart } from '../lib/CartContext';
 import { records } from '../data/records';
 import { usePricing } from '../lib/PricingContext';
 import CurrencyCountrySelector from './CurrencyCountrySelector';
 import ArtistLinks from './ArtistLinks';
+import { useWishlist } from '../hooks/useWishlist';
+import { Link } from 'react-router-dom';
 
 const recordsPerPage = 18;
 
 export default function DiscoverPage() {
   const { addToCart, items } = useCart();
   const { formatPrice, country, rateStatus, isCurrencyAvailable } = usePricing();
+  const wishlist = useWishlist();
   const [currentPage, setCurrentPage] = useState(0);
   const [sortOrder, setSortOrder] = useState<'featured' | 'price-asc' | 'price-desc'>('featured');
   const [sortMenuOpen, setSortMenuOpen] = useState(false);
@@ -86,11 +89,12 @@ export default function DiscoverPage() {
               <div className={`relative flex aspect-square items-center justify-center overflow-hidden border border-black ${record.background}`}>
                 <span className="absolute left-4 top-4 border border-black bg-white px-2 py-1 text-[0.6rem] font-bold uppercase tracking-wide">Community press</span>
                 <img src={record.image} alt={`${record.title} vinyl record artwork`} className="h-[86%] w-[86%] object-contain drop-shadow-xl" />
+                <button type="button" onClick={() => wishlist.toggle(record.id)} aria-label={`Save ${record.title}`} aria-pressed={wishlist.has(record.id)} className="absolute right-4 top-4 z-10 grid size-11 place-items-center rounded-full border border-black bg-white"><Heart size={19} fill={wishlist.has(record.id) ? 'currentColor' : 'none'} className={wishlist.has(record.id) ? 'text-brand-pink' : ''} /></button>
                 <span className="absolute bottom-4 right-4 rounded-full bg-black px-3 py-1 text-[0.6rem] font-bold uppercase tracking-wide text-white">Side A</span>
               </div>
               <div className="flex flex-1 flex-col pt-5">
                 <p className="text-[0.65rem] font-bold uppercase tracking-wide text-stone-600"><ArtistLinks artists={record.artists} /></p>
-                <h2 className="mt-1 text-xl font-bold">{record.title}</h2>
+                <h2 className="mt-1 text-xl font-bold"><Link to={`/records/${record.id}`} className="underline-offset-4 hover:underline">{record.title}</Link></h2>
                 <p className="mt-3 text-lg font-semibold">{formatPrice(record.priceUsd)}</p>
                 <button type="button" onClick={() => addToCart(record.id)} className="mt-5 w-full rounded-full bg-black px-5 py-3 text-xs font-bold uppercase tracking-wide text-white hover:bg-palette-31">
                   {cartItem ? `Add another · ${cartItem.quantity} in cart` : 'Add to cart'}

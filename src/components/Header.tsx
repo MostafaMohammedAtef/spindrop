@@ -1,27 +1,31 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart } from 'lucide-react';
+import { Heart, ShoppingCart } from 'lucide-react';
 import logo from '../../public/spindrop-icon-default.png';
 import { getDemoSession, signOutDemoAccount, subscribeToDemoAuth } from '../lib/demoAuth';
 import { useCart } from '../lib/CartContext';
+import { useWishlist } from '../hooks/useWishlist';
 
 const links = [
   { label: 'Discover', to: '/discover' },
   { label: 'Search', to: '/discover' },
   { label: 'Why Spindrop', to: '/' },
   { label: 'Cart', to: '/cart' },
+  { label: 'Wishlist', to: '/wishlist' },
 ];
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState(() => getDemoSession()?.name.trim().split(/\s+/)[0] ?? '');
   const { itemCount } = useCart();
+  const wishlist = useWishlist();
   const { pathname } = useLocation();
 
   function isCurrentPage(label: string) {
     if (label === 'Discover') return pathname === '/discover';
     if (label === 'Why Spindrop') return pathname === '/';
     if (label === 'Cart') return pathname === '/cart';
+    if (label === 'Wishlist') return pathname === '/wishlist';
     return false;
   }
 
@@ -58,11 +62,11 @@ export default function Header() {
                 key={link.label}
                 to={link.to}
                 aria-current={active ? 'page' : undefined}
-                aria-label={link.label === 'Cart' ? `Cart${itemCount > 0 ? `, ${itemCount} items` : ''}` : undefined}
-                title={link.label === 'Cart' ? 'Cart' : undefined}
+                aria-label={link.label === 'Cart' ? `Cart${itemCount > 0 ? `, ${itemCount} items` : ''}` : link.label === 'Wishlist' ? `Wishlist, ${wishlist.ids.length} saved records` : undefined}
+                title={link.label}
                 className={`inline-flex items-center gap-2 border-b-2 pb-1 ${active ? 'border-black' : 'border-transparent'} hover:border-black`}
               >
-                {link.label === 'Cart' ? <ShoppingCart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label}
+                {link.label === 'Cart' ? <ShoppingCart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label === 'Wishlist' ? <Heart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label}
                 {link.label === 'Cart' && itemCount > 0 && <span className="text-[0.65rem]">{itemCount}</span>}
               </Link>
             );
@@ -109,10 +113,10 @@ export default function Header() {
                 to={link.to}
                 onClick={() => setOpen(false)}
                 aria-current={active ? 'page' : undefined}
-                aria-label={link.label === 'Cart' ? `Cart${itemCount > 0 ? `, ${itemCount} items` : ''}` : undefined}
+                aria-label={link.label === 'Cart' ? `Cart${itemCount > 0 ? `, ${itemCount} items` : ''}` : link.label === 'Wishlist' ? `Wishlist, ${wishlist.ids.length} saved records` : undefined}
                 className={`flex items-center gap-3 border-b py-3 text-sm font-medium uppercase ${active ? 'border-black' : 'border-transparent'}`}
               >
-                {link.label === 'Cart' ? <ShoppingCart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label}
+                {link.label === 'Cart' ? <ShoppingCart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label === 'Wishlist' ? <Heart aria-hidden="true" size={20} strokeWidth={1.8} /> : link.label}
                 {link.label === 'Cart' && itemCount > 0 && <span>{itemCount}</span>}
               </Link>
             );

@@ -12,7 +12,7 @@ import ArtistLinks from './ArtistLinks';
 const cartIcons = [musicNotes, recordNeedle, headphones];
 
 export default function CartPage() {
-  const { items, removeFromCart } = useCart();
+  const { items, removeFromCart, setQuantity } = useCart();
   const { country, formatPrice, rateStatus, isCurrencyAvailable } = usePricing();
   const subtotalUsd = items.reduce((total, item) => {
     const record = records.find((entry) => entry.id === item.recordId);
@@ -59,6 +59,7 @@ export default function CartPage() {
                         <h2 className="mt-1 text-lg font-bold lg:text-xl">{record.title}</h2>
                         <p className="mt-2 text-sm font-semibold">{formatPrice(record.priceUsd)} each · {formatPrice(record.priceUsd * item.quantity)} total</p>
                         <p className="mt-2 flex items-center gap-2 text-xs font-medium uppercase tracking-wide"><img src={cartIcon} alt="" className="h-5 w-5 object-contain" /> Quantity: {item.quantity}</p>
+                        <label className="mt-3 flex items-center gap-2 text-xs font-bold uppercase">Change quantity <input type="number" min="1" max="10" value={item.quantity} onChange={(event) => setQuantity(item.recordId, Number(event.target.value))} className="h-10 w-16 border border-black px-2" /></label>
                       </div>
                       <button type="button" onClick={() => removeFromCart(item.recordId)} className="mt-3 self-start text-xs font-bold uppercase underline underline-offset-4">Remove</button>
                     </div>
@@ -73,8 +74,11 @@ export default function CartPage() {
               <div className="mt-6 border-t border-white/50 pt-4">
                 <p className="text-xs font-bold uppercase tracking-wide">Estimated subtotal</p>
                 <p className="mt-2 text-2xl font-bold">{formatPrice(subtotalUsd)}</p>
+                <p className="mt-2 text-xs">Estimated shipping: {formatPrice(subtotalUsd >= 75 || subtotalUsd === 0 ? 0 : 6)}</p>
+                <p className="mt-1 text-xs">Demo store, no payment is taken.</p>
               </div>
               <Link to="/discover" className="mt-6 inline-block rounded-full bg-palette-11 px-6 py-3 text-xs font-bold uppercase tracking-wide text-black">Keep discovering</Link>
+              <Link to="/checkout" className="mt-3 inline-block rounded-full bg-black px-6 py-3 text-center text-xs font-bold uppercase tracking-wide text-white">Demo checkout</Link>
             </aside>
           </div>
         )}
