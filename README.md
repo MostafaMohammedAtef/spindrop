@@ -80,9 +80,12 @@ Live site: [https://spindrop-lemon.vercel.app](https://spindrop-lemon.vercel.app
 src/
   assets/       Images and illustrations
   components/   Landing page sections and shared components
-  data/         Artist information
+  data/         Artist and record information
+  hooks/        Wishlist and recently viewed state
+  lib/          Safe storage, cart, pricing, search, and demo auth logic
   App.tsx       Page section order
   index.css     Tailwind imports, theme colors, and animations
+scripts/        Image conversion and social preview generation
 ```
 
 ## Routes
@@ -91,7 +94,7 @@ src/
 - `/discover` record catalog
 - `/records/:slug` record details
 - `/artists/:artistSlug` artist collection
-- `/cart`, `/wishlist`, `/checkout`, `/order/:id`
+- `/cart`, `/wishlist`, `/checkout`, `/order/:id` demo order confirmation
 - `/login`, `/sign-in` (redirects to `/login`), `/create-account`
 - `/account` and `/orders` (demo account required)
 
@@ -99,6 +102,6 @@ src/
 
 All data is demo-only and stored in this browser. There is no real account service, checkout, payment, shipping, or order fulfillment. Local storage keys include `spindrop.cart`, `spindrop.market-country`, `spindrop.market-rates`, `spindrop.demo.accounts`, `spindrop.demo.session`, `spindrop.wishlist`, `spindrop.recently-viewed`, `spindrop.recent-searches`, `spindrop.orders`, and `spindrop.newsletter`. The loading screen's once-per-session flag uses session storage.
 
-Demo account passwords use PBKDF2 with SHA-256, 210,000 iterations, and a unique 16-byte salt per account. Existing plaintext demo accounts migrate after a successful sign-in. Currency estimates use the public Frankfurter rates API and are not live transaction prices.
+Demo account passwords use PBKDF2 with SHA-256, 210,000 iterations, and a unique 16-byte salt per account. Existing plaintext demo accounts migrate automatically on startup, before sign-in. Currency estimates use the Frankfurter v2 rates endpoint and are not live transaction prices.
 
 Unit tests cover browser storage, cart quantity rules, price formatting and fallback behavior, search ranking, password hashing, and the legacy password migration.
